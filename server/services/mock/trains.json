@@ -1,0 +1,35 @@
+[
+  {
+    "Car": "6",
+    "Destination": "Glenmont",
+    "DestinationCode": "B11",
+    "DestinationName": "Glenmont",
+    "Group": "1",
+    "Line": "RD",
+    "LocationCode": "A01",
+    "LocationName": "Metro Center",
+    "Min": "BRD"
+  },
+  {
+    "Car": "6",
+    "Destination": "Glenmont",
+    "DestinationCode": "B11",
+    "DestinationName": "Glenmont",
+    "Group": "1",
+    "Line": "RD",
+    "LocationCode": "A01",
+    "LocationName": "Metro Center",
+    "Min": "15"
+  },
+  {
+    "Car": "6",
+    "Destination": "Glenmont",
+    "DestinationCode": "B11",
+    "DestinationName": "Glenmont",
+    "Group": "1",
+    "Line": "RD",
+    "LocationCode": "A01",
+    "LocationName": "Metro Center",
+    "Min": "25"
+  }
+]

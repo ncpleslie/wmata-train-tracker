@@ -1,3 +1,5 @@
+import "./env/env";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -6,6 +8,16 @@ export default defineNuxtConfig({
       "@nuxtjs/eslint-module",
       {
         lintOnStart: false,
+      },
+    ],
+    [
+      "@nuxtjs/google-fonts",
+      {
+        families: {
+          Roboto: true,
+          "Raleway+Dots": true,
+          VT323: true,
+        },
       },
     ],
   ],

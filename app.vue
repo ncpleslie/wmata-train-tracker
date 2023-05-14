@@ -1,11 +1,5 @@
-<script setup lang="ts">
-const { $client } = useNuxtApp();
-
-const { data: hello } = await $client.hello.useQuery({ text: "client" });
-</script>
-
 <template>
-  <div>
-    <p>{{ hello?.greeting }}</p>
-  </div>
+  <main class="h-screen bg-black">
+    <NuxtPage />
+  </main>
 </template>
