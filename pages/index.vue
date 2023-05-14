@@ -13,8 +13,10 @@ const { data, error } = useGetTrains();
       <p>DEST</p>
       <p class="justify-self-end">MIN</p>
     </div>
+    <div v-if="data.trains.length === 0" class="text-amber-400">No trains</div>
     <div
       v-for="train in data.trains"
+      v-else
       :key="`${train.car}${train.destinationCode}${train.min}`"
       class="grid grid-cols-4 text-amber-400"
     >
