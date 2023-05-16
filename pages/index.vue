@@ -9,23 +9,21 @@ const { data, error, refresh } = useGetTrains();
     <div v-if="!data">...</div>
     <div
       v-else
-      class="trains flex h-screen flex-col justify-between bg-black text-[10rem]"
+      class="trains flex h-screen flex-col justify-between bg-black text-9xl"
     >
       <div>
-        <div class="text-glow-red-600 grid grid-cols-5">
+        <div class="grid grid-cols-5 text-red-600">
           <p class="col-span-1">LN</p>
           <p class="col-span-1">CAR</p>
           <p class="col-span-2">DEST</p>
           <p class="col-span-1 justify-self-end">MIN</p>
         </div>
-        <div v-if="data.trains.length === 0" class="text-glow-amber-400">
-          No trains
-        </div>
+        <div v-if="data.trains.length === 0">No trains</div>
         <div
           v-for="train in data.trains"
           v-else
           :key="`${train.car}${train.destinationCode}${train.min}`"
-          class="glow-amber-400 text-glow-amber-400 grid grid-cols-5"
+          class="grid grid-cols-5 text-amber-400"
         >
           <p class="col-span-1">{{ train.line }}</p>
           <p class="col-span-1">{{ train.car }}</p>
