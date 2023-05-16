@@ -12,23 +12,23 @@ const { data, error, refresh } = useGetTrains();
       class="trains flex h-screen flex-col justify-between bg-black text-9xl"
     >
       <div>
-        <div class="grid grid-cols-5 text-red-600">
+        <div class="grid grid-cols-8 text-red-600">
           <p class="col-span-1">LN</p>
-          <p class="col-span-1">CAR</p>
-          <p class="col-span-2">DEST</p>
-          <p class="col-span-1 justify-self-end">MIN</p>
+          <p class="col-span-2">CAR</p>
+          <p class="col-span-3">DEST</p>
+          <p class="col-span-2 justify-self-end">MIN</p>
         </div>
         <div v-if="data.trains.length === 0">No trains</div>
         <div
           v-for="train in data.trains"
           v-else
           :key="`${train.car}${train.destinationCode}${train.min}`"
-          class="grid grid-cols-5 text-amber-400"
+          class="grid grid-cols-8 whitespace-nowrap text-amber-400"
         >
           <p class="col-span-1">{{ train.line }}</p>
-          <p class="col-span-1">{{ train.car }}</p>
-          <p class="col-span-2">{{ train.destination }}</p>
-          <p class="col-span-1 justify-self-end">{{ train.min }}</p>
+          <p class="col-span-2">{{ train.car }}</p>
+          <p class="col-span-3">{{ train.destination }}</p>
+          <p class="col-span-2 justify-self-end">{{ train.min }}</p>
         </div>
       </div>
       <ClientOnly>
