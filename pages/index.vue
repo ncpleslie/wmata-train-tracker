@@ -9,14 +9,14 @@ const { data, error, refresh } = useGetTrains();
     <div v-if="!data">...</div>
     <div
       v-else
-      class="trains flex h-screen flex-col justify-between bg-black text-xl"
+      class="trains flex h-screen flex-col justify-between bg-black text-[10rem]"
     >
       <div>
-        <div class="text-glow-red-600 grid grid-cols-4">
-          <p>LN</p>
-          <p>CAR</p>
-          <p>DEST</p>
-          <p class="justify-self-end">MIN</p>
+        <div class="text-glow-red-600 grid grid-cols-5">
+          <p class="col-span-1">LN</p>
+          <p class="col-span-1">CAR</p>
+          <p class="col-span-2">DEST</p>
+          <p class="col-span-1 justify-self-end">MIN</p>
         </div>
         <div v-if="data.trains.length === 0" class="text-glow-amber-400">
           No trains
@@ -25,16 +25,19 @@ const { data, error, refresh } = useGetTrains();
           v-for="train in data.trains"
           v-else
           :key="`${train.car}${train.destinationCode}${train.min}`"
-          class="glow-amber-400 text-glow-amber-400 grid grid-cols-4"
+          class="glow-amber-400 text-glow-amber-400 grid grid-cols-5"
         >
-          <p>{{ train.line }}</p>
-          <p>{{ train.car }}</p>
-          <p>{{ train.destination }}</p>
-          <p class="justify-self-end">{{ train.min }}</p>
+          <p class="col-span-1">{{ train.line }}</p>
+          <p class="col-span-1">{{ train.car }}</p>
+          <p class="col-span-2">{{ train.destination }}</p>
+          <p class="col-span-1 justify-self-end">{{ train.min }}</p>
         </div>
       </div>
       <ClientOnly>
-        <LastUpdated :last-updated="new Date(data.lastUpdated)" />
+        <LastUpdated
+          class="ml-auto"
+          :last-updated="new Date(data.lastUpdated)"
+        />
       </ClientOnly>
       <p v-if="error" class="text-white">Error: {{ error }}</p>
     </div>
@@ -49,11 +52,11 @@ const { data, error, refresh } = useGetTrains();
 
 .text-glow-amber-400 {
   @apply text-amber-400;
-  text-shadow: 0 0 1px rgb(251, 191, 36), 0 0 2px rgb(251, 191, 36);
+  text-shadow: 0 0 5px rgb(251, 191, 36), 0 0 10px rgb(251, 191, 36);
 }
 
 .text-glow-red-600 {
   @apply text-red-600;
-  text-shadow: 0 0 1px rgb(220, 38, 38), 0 0 2px rgb(220, 38, 38);
+  text-shadow: 0 0 5px rgb(220, 38, 38), 0 0 10px rgb(220, 38, 38);
 }
 </style>

@@ -11,5 +11,5 @@ const lastUpdatedLocale = computed(() =>
 </script>
 
 <template>
-  <p class="text-xs text-gray-700">Updated: {{ lastUpdatedLocale }}</p>
+  <p class="text-4xl text-gray-700">Updated: {{ lastUpdatedLocale }}</p>
 </template>
