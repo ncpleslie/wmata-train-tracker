@@ -9,7 +9,7 @@ const { data, error, refresh } = useGetTrains();
     <div v-if="!data">...</div>
     <div
       v-else
-      class="trains flex h-screen flex-col justify-between bg-black text-9xl"
+      class="trains flex h-screen flex-col justify-between bg-black text-8xl"
     >
       <div>
         <div class="grid grid-cols-8 text-red-600">
