@@ -1,5 +1,3 @@
-import "./env/env";
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -23,5 +21,10 @@ export default defineNuxtConfig({
   ],
   build: {
     transpile: ["trpc-nuxt"],
+  },
+  runtimeConfig: {
+    wmataApiKey: "",
+    baseWmataUrl: "",
+    useMockTrainService: "false",
   },
 });

@@ -4,7 +4,7 @@ import TrainsResponseEntity from "~/models/trains_response.entity";
 export default class TrainService implements ITrainService {
   constructor(private baseUrl: string, private apiKey: string) {}
 
-  public async getTrains(stationId: string) {
+  public async getTrains(stationId: string, max = 5) {
     const response = await fetch(
       `${this.baseUrl}/StationPrediction.svc/json/GetPrediction/${stationId}`,
       {
@@ -18,6 +18,7 @@ export default class TrainService implements ITrainService {
       throw new Error(data.Message);
     }
 
+    data.Trains = data.Trains.slice(0, max);
     return new TrainsResponseEntity(data.Trains);
   }
 }

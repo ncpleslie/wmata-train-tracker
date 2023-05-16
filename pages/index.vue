@@ -45,7 +45,7 @@ const { data, error, refresh } = useGetTrains();
 <style scoped>
 .trains {
   font-family: "VT323", "Raleway Dots", Roboto, monospace;
-  line-height: 1.6ch;
+  line-height: 1.7ch;
 }
 
 .text-glow-amber-400 {

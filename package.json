@@ -27,7 +27,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@t3-oss/env-nuxt": "^0.3.1",
     "@trpc/client": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "superjson": "^1.12.3",
