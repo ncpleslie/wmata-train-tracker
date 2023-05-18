@@ -1,6 +1,7 @@
 import { inferAsyncReturnType } from "@trpc/server";
 import TrainService from "../services/train.service";
 import MockTrainService from "../services/mock/mock-train.service";
+import ITrainService from "../services/interfaces/train-service.interface";
 const { wmataApiKey, baseWmataUrl, useMockTrainService } = useRuntimeConfig();
 
 /**
@@ -9,8 +10,8 @@ const { wmataApiKey, baseWmataUrl, useMockTrainService } = useRuntimeConfig();
  */
 export const createContext = () => ({
   trainService: useMockTrainService
-    ? new MockTrainService()
-    : new TrainService(baseWmataUrl, wmataApiKey),
+    ? (new MockTrainService() as ITrainService)
+    : (new TrainService(baseWmataUrl, wmataApiKey) as ITrainService),
 });
 
 export type Context = inferAsyncReturnType<typeof createContext>;

@@ -11,4 +11,7 @@ export const trainRouter = router({
     .query(async ({ ctx, input }) => {
       return await ctx.trainService.getTrains(input.stationId);
     }),
+  getStations: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.trainService.getStations();
+  }),
 });

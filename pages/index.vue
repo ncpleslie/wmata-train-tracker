@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import useGetTrains from "~/composables/use_train.composable";
+import { useGetTrains } from "~/composables/use_train.composable";
+const router = useRouter();
+type route = "stations" | "trains";
 
-const { data, error, refresh } = useGetTrains();
+const { data, error, refresh, pending: isRefreshing } = useGetTrains();
+
+const routeOnAreaTap = async (route: route) => {
+  await router.push(route);
+};
 </script>
 
 <template>
-  <PullToRefresh :on-refresh="refresh">
+  <AreaAction
+    :on-left-tap="() => routeOnAreaTap('stations')"
+    :on-middle-tap="refresh"
+    :on-right-tap="() => routeOnAreaTap('stations')"
+  >
     <div v-if="!data">...</div>
     <div
       v-else
@@ -38,8 +48,9 @@ const { data, error, refresh } = useGetTrains();
         />
       </ClientOnly>
       <p v-if="error" class="text-white">Error: {{ error }}</p>
+      <LoadingIndicator v-if="isRefreshing" />
     </div>
-  </PullToRefresh>
+  </AreaAction>
 </template>
 
 <style scoped>
@@ -56,5 +67,9 @@ const { data, error, refresh } = useGetTrains();
 .text-glow-red-600 {
   @apply text-red-600;
   text-shadow: 0 0 5px rgb(220, 38, 38), 0 0 10px rgb(220, 38, 38);
+}
+
+::selection {
+  background: transparent;
 }
 </style>
