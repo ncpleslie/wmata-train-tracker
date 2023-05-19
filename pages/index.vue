@@ -1,9 +1,20 @@
 <script setup lang="ts">
+import { useAutoAnimate } from "@formkit/auto-animate/vue";
 import { useGetTrains } from "~/composables/use_train.composable";
-const router = useRouter();
-type route = "stations" | "trains";
+import { useStationStore } from "~/stores/station.store";
 
-const { data, error, refresh, pending: isRefreshing } = useGetTrains();
+const router = useRouter();
+const stationStore = useStationStore();
+const [parent] = useAutoAnimate();
+
+type route = "stations";
+
+const {
+  data,
+  error,
+  refresh,
+  pending: isRefreshing,
+} = useGetTrains(stationStore.selectedStation?.code);
 
 const routeOnAreaTap = async (route: route) => {
   await router.push(route);
@@ -21,7 +32,7 @@ const routeOnAreaTap = async (route: route) => {
       v-else
       class="trains flex h-screen flex-col justify-between bg-black text-8xl"
     >
-      <div>
+      <div ref="parent">
         <div class="grid grid-cols-8 text-red-600">
           <p class="col-span-1">LN</p>
           <p class="col-span-2">CAR</p>

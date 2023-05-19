@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 export const trainSchema = z.object({
-  Car: z.string(),
+  Car: z.string().nullish(),
   Destination: z.string(),
-  DestinationCode: z.string(),
+  DestinationCode: z.string().nullish(),
   DestinationName: z.string(),
   Group: z.string(),
   Line: z.string(),

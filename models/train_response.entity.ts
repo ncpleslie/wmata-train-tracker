@@ -7,9 +7,9 @@ export default class TrainResponseEntity {
       throw new Error(result.error.message);
     }
 
-    this.car = data.Car;
+    this.car = data.Car ?? undefined;
     this.destination = data.Destination;
-    this.destinationCode = data.DestinationCode;
+    this.destinationCode = data.DestinationCode ?? undefined;
     this.destinationName = data.DestinationName;
     this.group = data.Group;
     this.line = data.Line;
@@ -21,9 +21,9 @@ export default class TrainResponseEntity {
     this.trainId = data.TrainId ?? undefined;
   }
 
-  public car: string;
+  public car?: string;
   public destination: string;
-  public destinationCode: string;
+  public destinationCode?: string;
   public destinationName: string;
   public group: string;
   public line: string;

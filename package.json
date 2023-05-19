@@ -22,11 +22,14 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nuxt": "^3.4.3",
+    "nuxt-icon": "^0.4.1",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@formkit/auto-animate": "1.0.0-beta.6",
+    "@pinia/nuxt": "^0.4.11",
     "@trpc/client": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "superjson": "^1.12.3",

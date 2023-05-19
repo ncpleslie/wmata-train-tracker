@@ -1,5 +1,5 @@
-import StationsResponseEntity from "~/models/stations_response.entity";
 import ITrainService from "./interfaces/train-service.interface";
+import StationsResponseEntity from "~/models/stations_response.entity";
 import TrainsResponseEntity from "~/models/trains_response.entity";
 
 export default class TrainService implements ITrainService {
@@ -15,7 +15,9 @@ export default class TrainService implements ITrainService {
     }
 
     data.Trains = data.Trains.slice(0, max);
-    return new TrainsResponseEntity(data.Trains);
+    return new TrainsResponseEntity(
+      data.Trains.length === 0 ? [] : data.Trains
+    );
   }
 
   public async getStations() {

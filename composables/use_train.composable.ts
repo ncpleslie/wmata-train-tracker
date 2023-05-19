@@ -8,10 +8,10 @@ type GetStationOutput = RouterOutput["train"]["getStations"];
 
 type ErrorOutput = TRPCClientError<AppRouter>;
 
-export function useGetTrains() {
+export function useGetTrains(stationId?: string) {
   const { $client } = useNuxtApp();
   return useAsyncData<GetTrainsOutput, ErrorOutput>(() =>
-    $client.train.getTrains.query({})
+    $client.train.getTrains.query({ stationId })
   );
 }
 
