@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     wmataApiKey: "",
-    baseWmataUrl: "",
+    baseWmataUrl: "https://api.wmata.com",
     useMockTrainService: "",
   },
 });
