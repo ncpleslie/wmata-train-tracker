@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useAutoAnimate } from "@formkit/auto-animate/vue";
 import TrainResponseEntity from "~/models/train_response.entity";
+
+const [parent] = useAutoAnimate();
 
 interface TrainArrivalBoardProps {
   trains: TrainResponseEntity[];
