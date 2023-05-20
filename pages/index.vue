@@ -2,12 +2,15 @@
 import { useAutoAnimate } from "@formkit/auto-animate/vue";
 import { useGetTrains } from "~/composables/use_train.composable";
 import { useStationStore } from "~/stores/station.store";
+import { route } from "~/types/route.type";
 
 const router = useRouter();
 const stationStore = useStationStore();
 const [parent] = useAutoAnimate();
 
-type route = "stations";
+setInterval(() => {
+  refresh();
+}, 1000 * 60 * 2);
 
 const {
   data,
@@ -23,7 +26,6 @@ const routeOnAreaTap = async (route: route) => {
 
 <template>
   <AreaAction
-    :on-left-tap="() => routeOnAreaTap('stations')"
     :on-middle-tap="refresh"
     :on-right-tap="() => routeOnAreaTap('stations')"
   >
@@ -39,7 +41,9 @@ const routeOnAreaTap = async (route: route) => {
           <p class="col-span-3">DEST</p>
           <p class="col-span-2 justify-self-end">MIN</p>
         </div>
-        <div v-if="data.trains.length === 0">No trains</div>
+        <div v-if="data.trains.length === 0" class="text-amber-400">
+          No trains
+        </div>
         <div
           v-for="train in data.trains"
           v-else

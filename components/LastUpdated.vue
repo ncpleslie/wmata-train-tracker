@@ -6,7 +6,10 @@ interface LastUpdatedProps {
 const props = defineProps<LastUpdatedProps>();
 
 const lastUpdatedLocale = computed(() =>
-  props.lastUpdated.toLocaleTimeString()
+  props.lastUpdated.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  })
 );
 </script>
 

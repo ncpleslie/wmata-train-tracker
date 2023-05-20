@@ -7,6 +7,10 @@ const router = useRouter();
 const onStationClicked = () => {
   router.push("/");
 };
+
+const onBackClicked = () => {
+  router.back();
+};
 </script>
 
 <template>
@@ -15,5 +19,6 @@ const onStationClicked = () => {
     v-else
     :stations="data.stations"
     @station-clicked="onStationClicked"
+    @back-clicked="onBackClicked"
   />
 </template>

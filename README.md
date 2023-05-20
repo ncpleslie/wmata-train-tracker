@@ -2,7 +2,7 @@
 
 ![](./public/android-chrome-192x192.png)
 
-A WMATA train tracking application for monitoring train's arrival times at stations.
+WMATA train tracking application for monitoring train arrival times at your stations in the DMV area.
 
 Check it out at https://wmata-train-tracking.vercel.app/
 

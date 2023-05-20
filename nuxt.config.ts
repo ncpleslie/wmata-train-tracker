@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   modules: [
     "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
     "nuxt-icon",
     "@nuxtjs/tailwindcss",
     [
@@ -28,5 +29,27 @@ export default defineNuxtConfig({
     wmataApiKey: "",
     baseWmataUrl: "https://api.wmata.com",
     useMockTrainService: "",
+  },
+  app: {
+    head: {
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+      title: "WMATA Train Arrival Times",
+      meta: [
+        {
+          hid: "description",
+          name: "description",
+          content: "WMATA Train Arrival Times",
+        },
+      ],
+      link: [
+        {
+          rel: "icon",
+          type: "image/x-icon",
+          href: "/favicon.ico",
+        },
+      ],
+    },
+    pageTransition: { name: "page", mode: "out-in" },
   },
 });

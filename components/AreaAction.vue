@@ -1,11 +1,6 @@
 <template>
   <div class="h-screen w-screen" @click="handleClick">
-    <div
-      class="page"
-      :class="{ 'slide-left': slideLeft, 'slide-right': slideRight }"
-    >
-      <slot></slot>
-    </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -50,26 +45,3 @@ const handleClick = (event: MouseEvent) => {
   props.onMiddleTap();
 };
 </script>
-
-<style scoped>
-.container {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-}
-
-.page {
-  width: 100%;
-  height: 100%;
-  transition: transform 0.5s;
-}
-
-.slide-left {
-  transform: translateX(100%);
-}
-
-.slide-right {
-  transform: translateX(-100%);
-}
-</style>

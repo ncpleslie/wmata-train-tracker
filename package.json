@@ -17,6 +17,7 @@
     "@nuxtjs/eslint-module": "^4.0.2",
     "@nuxtjs/google-fonts": "^3.0.0",
     "@nuxtjs/tailwindcss": "^6.6.8",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",

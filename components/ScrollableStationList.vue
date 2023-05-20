@@ -14,11 +14,12 @@ interface ScrollableStationListProps {
 }
 
 const props = withDefaults(defineProps<ScrollableStationListProps>(), {
-  totalPerPage: 5,
+  totalPerPage: 12,
 });
 
 const emit = defineEmits<{
   (e: "stationClicked"): void;
+  (e: "backClicked"): void;
 }>();
 
 const displayedItems = computed(() => {
@@ -44,34 +45,41 @@ const onStationClicked = (station: StationResponseEntity) => {
   emit("stationClicked");
   stationStore.setSelectedStation(station);
 };
+
+const onBackedClicked = () => {
+  emit("backClicked");
+};
 </script>
 
 <template>
-  <div class="flex w-screen flex-col gap-2">
-    <button
-      class="rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
-      @click="previousPage"
-    >
-      <Icon name="tabler:arrow-big-up-filled" size="2em" />
-    </button>
+  <div class="flex h-screen w-screen flex-col gap-2">
+    <div class="flex flex-row gap-2">
+      <button
+        class="w-24 rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+        @click="onBackedClicked"
+      >
+        <Icon name="tabler:arrow-big-left-filled" size="2em" />
+      </button>
+      <button
+        class="w-full rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
+        @click="previousPage"
+      >
+        <Icon name="tabler:arrow-big-up-filled" size="2em" />
+      </button>
+    </div>
     <ul
       ref="parent"
-      class="flex h-full flex-grow flex-row flex-wrap gap-2 overflow-y-hidden"
+      class="flex h-full flex-row flex-wrap items-center justify-center gap-2 overflow-y-hidden"
     >
       <li v-for="station in displayedItems" :key="station.code" class="flex-1">
         <button
           :key="station.code"
           class="h-24 w-full min-w-[12rem] rounded bg-amber-400 px-4 py-2 font-bold text-white transition-colors duration-300 ease-in-out hover:bg-amber-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-50"
           :class="{
-            'bg-amber-200 text-black': selectedStation?.code === station.code,
+            '!bg-amber-200 !text-black': selectedStation?.code === station.code,
           }"
           @click="onStationClicked(station)"
         >
-          <Icon
-            v-if="selectedStation?.code === station.code"
-            name="tabler:circle-check-filled"
-            size="2em"
-          />
           {{ station.name }}
         </button>
       </li>
