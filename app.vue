@@ -1,7 +1,5 @@
 <template>
-  <main
-    class="h-screen cursor-none overflow-x-hidden overflow-y-hidden bg-black"
-  >
+  <main class="h-screen overflow-x-hidden overflow-y-hidden bg-black">
     <NuxtPage />
   </main>
 </template>

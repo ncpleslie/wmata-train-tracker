@@ -3,14 +3,6 @@ import { useGetStations } from "~/composables/use_train.composable";
 
 const { data } = useGetStations();
 const router = useRouter();
-
-const onStationClicked = () => {
-  router.push("/");
-};
-
-const onBackClicked = () => {
-  router.back();
-};
 </script>
 
 <template>
@@ -18,7 +10,7 @@ const onBackClicked = () => {
   <ScrollableStationList
     v-else
     :stations="data.stations"
-    @station-clicked="onStationClicked"
-    @back-clicked="onBackClicked"
+    @station-clicked="router.push('/')"
+    @back-clicked="router.push('/')"
   />
 </template>
