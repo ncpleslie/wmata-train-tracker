@@ -1,9 +1,3 @@
-<template>
-  <div class="h-screen w-screen" @click="handleClick">
-    <slot></slot>
-  </div>
-</template>
-
 <script setup lang="ts">
 interface AreaActionProps {
   onLeftTap?: () => Promise<void>;
@@ -45,3 +39,9 @@ const handleClick = (event: MouseEvent) => {
   props.onMiddleTap();
 };
 </script>
+
+<template>
+  <div class="h-screen w-screen" @click="handleClick">
+    <slot></slot>
+  </div>
+</template>

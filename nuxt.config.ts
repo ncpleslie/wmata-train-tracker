@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
+    "nuxt-headlessui",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "nuxt-icon",
@@ -29,6 +30,9 @@ export default defineNuxtConfig({
     wmataApiKey: "",
     baseWmataUrl: "https://api.wmata.com",
     useMockTrainService: "",
+    public: {
+      refreshInMs: 60000,
+    },
   },
   app: {
     head: {
@@ -51,5 +55,8 @@ export default defineNuxtConfig({
       ],
     },
     pageTransition: { name: "page", mode: "out-in" },
+  },
+  headlessui: {
+    prefix: "Headless",
   },
 });

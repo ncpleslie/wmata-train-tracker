@@ -54,42 +54,37 @@ const onBackedClicked = () => {
 <template>
   <div class="flex h-screen w-screen flex-col gap-2">
     <div class="flex flex-row gap-2">
-      <button
-        class="w-24 rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
-        @click="onBackedClicked"
+      <BaseButton
+        class="w-24"
+        @clicked="onBackedClicked"
+        @mouseovered="onBackedClicked"
       >
         <Icon name="tabler:arrow-big-left-filled" size="2em" />
-      </button>
-      <button
-        class="w-full rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
-        @click="previousPage"
-      >
+      </BaseButton>
+      <BaseButton class="w-full" @clicked="previousPage">
         <Icon name="tabler:arrow-big-up-filled" size="2em" />
-      </button>
+      </BaseButton>
     </div>
     <ul
       ref="parent"
-      class="flex h-full flex-row flex-wrap items-center justify-center gap-2 overflow-y-hidden"
+      class="flex h-full flex-row flex-wrap items-center justify-center gap-1 overflow-y-hidden"
     >
       <li v-for="station in displayedItems" :key="station.code" class="flex-1">
-        <button
-          :key="station.code"
-          class="h-24 w-full min-w-[12rem] rounded bg-amber-400 px-4 py-2 font-bold text-white transition-colors duration-300 ease-in-out hover:bg-amber-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-opacity-50"
+        <BaseButton
+          class="h-[6.5rem] w-full min-w-[12rem]"
+          primary
           :class="{
             '!bg-amber-200 !text-black': selectedStation?.code === station.code,
           }"
-          @click="onStationClicked(station)"
+          @clicked="onStationClicked(station)"
         >
           {{ station.name }}
-        </button>
+        </BaseButton>
       </li>
     </ul>
-    <button
-      class="rounded bg-red-600 py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50"
-      @click="nextPage"
-    >
+    <BaseButton class="w-full" @clicked="nextPage">
       <Icon name="tabler:arrow-big-down-filled" size="2em" />
-    </button>
+    </BaseButton>
   </div>
 </template>
 
