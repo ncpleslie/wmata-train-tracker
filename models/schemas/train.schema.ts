@@ -15,4 +15,4 @@ export const trainSchema = z.object({
   TrainId: z.string().nullish(),
 });
 
-export type TrainResponse = z.infer<typeof trainSchema>;
+export type Train = z.infer<typeof trainSchema>;

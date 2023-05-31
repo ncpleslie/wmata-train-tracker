@@ -2,7 +2,7 @@
 
 ![](./public/android-chrome-192x192.png)
 
-WMATA train tracking application for monitoring train arrival times at your stations in the DMV area.
+WMATA train tracking application for monitoring train arrival times at your station of choice. Built to run on the Raspberry Pi Zero 2 W
 
 Check it out at https://wmata-train-tracking.vercel.app/.
 

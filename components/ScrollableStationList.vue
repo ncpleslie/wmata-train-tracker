@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAutoAnimate } from "@formkit/auto-animate/vue";
-import StationResponseEntity from "~/models/station_response.entity";
+import StationEntity from "~/models/station.entity";
 import { useStationStore } from "~/stores/station.store";
 
 const stationStore = useStationStore();
@@ -9,7 +9,7 @@ const { selectedStation, currentPage } = toRefs(stationStore);
 const [parent] = useAutoAnimate();
 
 interface ScrollableStationListProps {
-  stations: StationResponseEntity[];
+  stations: StationEntity[];
   totalPerPage?: number;
 }
 
@@ -41,7 +41,7 @@ const previousPage = () => {
   currentPage.value = newPage >= 0 ? newPage : totalPages.value - 1;
 };
 
-const onStationClicked = (station: StationResponseEntity) => {
+const onStationClicked = (station: StationEntity) => {
   emit("stationClicked");
   stationStore.setSelectedStation(station);
 };

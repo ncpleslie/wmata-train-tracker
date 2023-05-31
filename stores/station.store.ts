@@ -1,13 +1,16 @@
 import { defineStore } from "pinia";
-import StationResponseEntity from "~/models/station_response.entity";
+import StationEntity from "~/models/station.entity";
 
+/**
+ * Store for the station.
+ */
 export const useStationStore = defineStore(
   "station",
   () => {
-    const selectedStation = ref<StationResponseEntity | null>(null);
+    const selectedStation = ref<StationEntity | null>(null);
     const currentPage = ref(0);
 
-    const setSelectedStation = (station: StationResponseEntity) => {
+    const setSelectedStation = (station: StationEntity) => {
       selectedStation.value = station;
     };
 

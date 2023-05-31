@@ -32,6 +32,7 @@ export default defineNuxtConfig({
     useMockTrainService: "",
     public: {
       refreshInMs: 60000,
+      incidentRefreshInMs: 120000,
     },
   },
   app: {

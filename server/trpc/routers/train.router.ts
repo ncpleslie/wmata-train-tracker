@@ -2,6 +2,9 @@ import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
 
 export const trainRouter = router({
+  getIncidents: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.trainService.getIncidents();
+  }),
   getTrains: publicProcedure
     .input(
       z.object({

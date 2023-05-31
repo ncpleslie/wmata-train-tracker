@@ -19,4 +19,4 @@ export const stationSchema = z.object({
   }),
 });
 
-export type StationResponse = z.infer<typeof stationSchema>;
+export type Station = z.infer<typeof stationSchema>;
