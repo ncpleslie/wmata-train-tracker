@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useAutoAnimate } from "@formkit/auto-animate/vue";
 import { useResizeObserver } from "@vueuse/core";
 import StationEntity from "~/models/station.entity";
 import { useStationStore } from "~/stores/station.store";
@@ -13,9 +12,12 @@ const props = defineProps<ScrollableStationListProps>();
 
 const stationStore = useStationStore();
 const { selectedStation, currentPage } = toRefs(stationStore);
-const [parent] = useAutoAnimate<HTMLUListElement>();
+const parent = ref<HTMLDivElement | null>(null);
 
 const totalPerPage = ref(0);
+const firstObservation = ref(true);
+const currentHeight = ref(0);
+const currentWidth = ref(0);
 
 const displayedItems = computed(() => {
   const startIndex = currentPage.value * totalPerPage.value;
@@ -24,16 +26,28 @@ const displayedItems = computed(() => {
 });
 
 useResizeObserver(parent, () => {
-  currentPage.value = 0;
-  const parentHeight = parent.value?.offsetHeight ?? 0;
-  const parentWidth = parent.value?.offsetWidth ?? 0;
+  const height = parent.value?.offsetHeight ?? 0;
+  const width = parent.value?.offsetWidth ?? 0;
+  // Prevents re-rendering when the size hasn't changed.
+  if (height === currentHeight.value && width === currentWidth.value) {
+    return;
+  }
+
+  currentHeight.value = height;
+  currentWidth.value = width;
   const totalButtonsHeight = Math.floor(
-    parentHeight / AppConstants.minStationButtonSize.height
+    currentHeight.value / AppConstants.minStationButtonSize.height
   );
   const totalButtonsWidth = Math.floor(
-    parentWidth / AppConstants.minStationButtonSize.width
+    currentWidth.value / AppConstants.minStationButtonSize.width
   );
   totalPerPage.value = totalButtonsHeight * totalButtonsWidth;
+
+  // Prevents losing page when reloading component.
+  if (!firstObservation.value) {
+    currentPage.value = 0;
+  }
+  firstObservation.value = false;
 });
 
 const totalPages = computed(() =>
@@ -80,7 +94,7 @@ const emit = defineEmits<{
     </div>
     <ul
       ref="parent"
-      class="flex h-full flex-row flex-wrap items-stretch justify-center gap-1 overflow-y-hidden"
+      class="flex h-full flex-row flex-wrap items-stretch justify-center gap-1 overflow-hidden"
     >
       <li v-for="station in displayedItems" :key="station.code" class="flex-1">
         <BaseButton
