@@ -14,7 +14,7 @@ const router = useRouter();
       @back-clicked="router.push('/')"
     />
     <ErrorPopup
-      :open="(!pending && !data) || Boolean(error)"
+      :open="(!pending && !data) || Boolean(error?.message)"
       @on-close="refresh"
     >
       <template #error-message>

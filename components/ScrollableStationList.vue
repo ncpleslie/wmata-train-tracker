@@ -1,35 +1,43 @@
 <script setup lang="ts">
 import { useAutoAnimate } from "@formkit/auto-animate/vue";
+import { useResizeObserver } from "@vueuse/core";
 import StationEntity from "~/models/station.entity";
 import { useStationStore } from "~/stores/station.store";
-
-const stationStore = useStationStore();
-const { selectedStation, currentPage } = toRefs(stationStore);
-
-const [parent] = useAutoAnimate();
+import AppConstants from "~/constants/app.constants";
 
 interface ScrollableStationListProps {
   stations: StationEntity[];
-  totalPerPage?: number;
 }
 
-const props = withDefaults(defineProps<ScrollableStationListProps>(), {
-  totalPerPage: 12,
-});
+const props = defineProps<ScrollableStationListProps>();
 
-const emit = defineEmits<{
-  (e: "stationClicked"): void;
-  (e: "backClicked"): void;
-}>();
+const stationStore = useStationStore();
+const { selectedStation, currentPage } = toRefs(stationStore);
+const [parent] = useAutoAnimate<HTMLUListElement>();
+
+const totalPerPage = ref(0);
 
 const displayedItems = computed(() => {
-  const startIndex = currentPage.value * props.totalPerPage;
-  const endIndex = startIndex + props.totalPerPage;
+  const startIndex = currentPage.value * totalPerPage.value;
+  const endIndex = startIndex + totalPerPage.value;
   return props.stations.slice(startIndex, endIndex);
 });
 
+useResizeObserver(parent, () => {
+  currentPage.value = 0;
+  const parentHeight = parent.value?.offsetHeight ?? 0;
+  const parentWidth = parent.value?.offsetWidth ?? 0;
+  const totalButtonsHeight = Math.floor(
+    parentHeight / AppConstants.minStationButtonSize.height
+  );
+  const totalButtonsWidth = Math.floor(
+    parentWidth / AppConstants.minStationButtonSize.width
+  );
+  totalPerPage.value = totalButtonsHeight * totalButtonsWidth;
+});
+
 const totalPages = computed(() =>
-  Math.ceil(props.stations.length / props.totalPerPage)
+  Math.ceil(props.stations.length / totalPerPage.value)
 );
 
 const nextPage = () => {
@@ -49,6 +57,11 @@ const onStationClicked = (station: StationEntity) => {
 const onBackedClicked = () => {
   emit("backClicked");
 };
+
+const emit = defineEmits<{
+  (e: "stationClicked"): void;
+  (e: "backClicked"): void;
+}>();
 </script>
 
 <template>
@@ -67,11 +80,15 @@ const onBackedClicked = () => {
     </div>
     <ul
       ref="parent"
-      class="flex h-full flex-row flex-wrap items-center justify-center gap-1 overflow-y-hidden"
+      class="flex h-full flex-row flex-wrap items-stretch justify-center gap-1 overflow-y-hidden"
     >
       <li v-for="station in displayedItems" :key="station.code" class="flex-1">
         <BaseButton
-          class="h-[6.5rem] w-full min-w-[12rem]"
+          :style="{
+            'min-height': `${AppConstants.minStationButtonSize.height}px`,
+            'min-width': `${AppConstants.minStationButtonSize.width}px`,
+          }"
+          class="h-full w-full"
           primary
           :class="{
             '!bg-amber-200 !text-black': selectedStation?.code === station.code,

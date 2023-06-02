@@ -7,7 +7,6 @@ import TrainEntity from "./train.entity";
  * @see TrainEntity
  * @see Train
  * @see TrainSchema
- * @property lastUpdated - The last time the trains were updated.
  */
 export default class TrainsResponseEntity {
   /**

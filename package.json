@@ -19,6 +19,8 @@
     "@nuxtjs/tailwindcss": "^6.6.8",
     "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@types/node": "^18",
+    "@vueuse/core": "^10.1.2",
+    "@vueuse/nuxt": "^10.1.2",
     "eslint": "^8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
