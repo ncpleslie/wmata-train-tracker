@@ -1,7 +1,7 @@
 import { TRPCClientError } from "@trpc/client";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/server/trpc/routers";
-import { useStationStore } from "~/stores/station.store";
+import { useTrainStore } from "~/stores/train.store";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type getIncidentsOutput = RouterOutput["train"]["getIncidents"];
@@ -17,8 +17,9 @@ type ErrorOutput = TRPCClientError<AppRouter>;
  */
 export function useGetIncidents() {
   const { $client } = useNuxtApp();
-  return useAsyncData<getIncidentsOutput, ErrorOutput>(() =>
-    $client.train.getIncidents.query()
+  return useAsyncData<getIncidentsOutput, ErrorOutput>(
+    () => $client.train.getIncidents.query(),
+    { immediate: false }
   );
 }
 
@@ -30,11 +31,11 @@ export function useGetIncidents() {
  * @returns - The asynchronous data containing the trains.
  */
 export function useGetTrains() {
-  const stationStore = useStationStore();
+  const trainStore = useTrainStore();
   const { $client } = useNuxtApp();
   return useAsyncData<GetTrainsOutput, ErrorOutput>(() =>
     $client.train.getTrains.query({
-      stationId: stationStore.selectedStation?.code,
+      stationId: trainStore.selectedStation?.code,
     })
   );
 }

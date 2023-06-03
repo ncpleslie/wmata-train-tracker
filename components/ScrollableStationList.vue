@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useResizeObserver } from "@vueuse/core";
 import StationEntity from "~/models/station.entity";
-import { useStationStore } from "~/stores/station.store";
+import { useTrainStore } from "~/stores/train.store";
 import AppConstants from "~/constants/app.constants";
 
 interface ScrollableStationListProps {
@@ -10,7 +10,7 @@ interface ScrollableStationListProps {
 
 const props = defineProps<ScrollableStationListProps>();
 
-const stationStore = useStationStore();
+const stationStore = useTrainStore();
 const { selectedStation, currentPage } = toRefs(stationStore);
 const parent = ref<HTMLDivElement | null>(null);
 
@@ -26,20 +26,19 @@ const displayedItems = computed(() => {
 });
 
 useResizeObserver(parent, () => {
-  const height = parent.value?.offsetHeight ?? 0;
-  const width = parent.value?.offsetWidth ?? 0;
-  // Prevents re-rendering when the size hasn't changed.
+  const height = parent.value?.offsetHeight || 0;
+  const width = parent.value?.offsetWidth || 0;
+
   if (height === currentHeight.value && width === currentWidth.value) {
     return;
   }
 
-  currentHeight.value = height;
-  currentWidth.value = width;
+  [currentHeight.value, currentWidth.value] = [height, width];
   const totalButtonsHeight = Math.floor(
-    currentHeight.value / AppConstants.minStationButtonSize.height
+    height / AppConstants.minStationButtonSize.height
   );
   const totalButtonsWidth = Math.floor(
-    currentWidth.value / AppConstants.minStationButtonSize.width
+    width / AppConstants.minStationButtonSize.width
   );
   totalPerPage.value = totalButtonsHeight * totalButtonsWidth;
 
@@ -47,6 +46,7 @@ useResizeObserver(parent, () => {
   if (!firstObservation.value) {
     currentPage.value = 0;
   }
+
   firstObservation.value = false;
 });
 

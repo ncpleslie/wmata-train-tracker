@@ -14,4 +14,9 @@ export default class AppConstants {
     width: 250,
     height: 90,
   };
+
+  /**
+   * The maximum length of the incident text for each slide.
+   */
+  public static readonly maxIncidentTextLength = 30;
 }

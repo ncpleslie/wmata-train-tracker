@@ -37,12 +37,12 @@ defineProps<TrainArrivalBoardProps>();
 <style scoped>
 .text-glow-amber-400 {
   @apply text-amber-400;
-  text-shadow: 0 0 5px rgb(251, 191, 36), 0 0 10px rgb(251, 191, 36);
+  text-shadow: 0 0 5px #fbbf24, 0 0 10px #fbbf24;
 }
 
 .text-glow-red-600 {
   @apply text-red-600;
-  text-shadow: 0 0 5px rgb(220, 38, 38), 0 0 10px rgb(220, 38, 38);
+  text-shadow: 0 0 5px #dc2626, 0 0 10px #dc2626;
 }
 
 ::selection {

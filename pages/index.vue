@@ -1,26 +1,37 @@
 <script setup lang="ts">
 import { useGetTrains } from "~/composables/use_train.composable";
-import { useStationStore } from "~/stores/station.store";
+import { useTrainStore } from "~/stores/train.store";
 import { route } from "~/types/route.type";
 import AppConstants from "~/constants/app.constants";
 
 const runtimeConfig = useRuntimeConfig();
 const router = useRouter();
-const stationStore = useStationStore();
+const trainStore = useTrainStore();
+
 const {
   data: trainData,
   error: trainError,
   refresh: refreshTrains,
   pending: trainIsRefreshing,
 } = useGetTrains();
-// const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
+const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
 
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
-// useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
+useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
 
 const routeOnAreaTap = async (route: route) => {
   await router.push(route);
 };
+
+watch(incidentData, () => {
+  if (
+    incidentData.value?.incidents &&
+    incidentData.value?.incidents.length > 0
+  ) {
+    trainStore.setIncidents(incidentData.value.incidents);
+    router.push("/incidents");
+  }
+});
 </script>
 
 <template>
@@ -36,7 +47,7 @@ const routeOnAreaTap = async (route: route) => {
             <SublineText
               class="trains mr-auto w-1/2 truncate text-4xl text-gray-700"
             >
-              {{ stationStore.selectedStation?.name }}
+              {{ trainStore.selectedStation?.name }}
             </SublineText>
             <ClientOnly>
               <LastUpdated
@@ -63,7 +74,6 @@ const routeOnAreaTap = async (route: route) => {
 
 <style scoped>
 .trains {
-  font-family: "VT323", "Raleway Dots", Roboto, monospace;
   line-height: 1.7ch;
 }
 </style>

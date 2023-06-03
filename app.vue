@@ -1,6 +1,6 @@
 <template>
   <main class="h-screen overflow-x-hidden overflow-y-hidden bg-black">
-    <NuxtPage />
+    <NuxtPage :key="$route.fullPath" />
   </main>
 </template>
 
@@ -14,5 +14,9 @@
 .page-leave-to {
   opacity: 0;
   filter: blur(1rem);
+}
+
+main {
+  font-family: "VT323", "Raleway Dots", Roboto, monospace;
 }
 </style>
