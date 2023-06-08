@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import AppConstants from "~/constants/app.constants";
+
 interface TextCarouselProps {
   slides: string[];
 }
@@ -9,21 +11,58 @@ const activeIndex = ref(0);
 const enteringIndex = ref(-1);
 const leavingIndex = ref(-1);
 const timer = ref<NodeJS.Timeout | null>(null);
+const slidesCount = ref(0);
+const slots = useSlots();
 
 const startCarousel = () => {
   timer.value = setInterval(() => {
     leavingIndex.value = activeIndex.value;
     enteringIndex.value = activeIndex.value;
-    activeIndex.value = (activeIndex.value + 1) % props.slides.length;
-    if (leavingIndex.value === props.slides.length - 1) {
+    activeIndex.value = (activeIndex.value + 1) % slidesCount.value;
+
+    if (leavingIndex.value === slidesCount.value - 1) {
       emit("slideEnd");
     }
-  }, 5000);
+  }, AppConstants.incidentSlideTimeInMs);
 };
 
-const slidesStyle = computed(() => ({
-  transform: `translateX(-${activeIndex.value * 100}%)`,
-}));
+const render = () => {
+  return slots.default?.().map((slot) => {
+    console.log(slot);
+    return [
+      h(
+        slot.type.toString(),
+        {
+          ...slot.props,
+          class: `${slot.props?.class} slide`,
+          style: {
+            ...slot.el?.props?.style,
+            transform: `translateX(-${activeIndex.value * 100}%)`,
+            transition: "transform 0.5s",
+            flex: "0 0 100%",
+          },
+          innerHTML: typeof slot.children === "string" ? slot.children : null,
+        },
+        slot.children ?? (slot.children as unknown as VNode[])
+      ),
+      props.slides.map((slide) =>
+        h(
+          "p",
+          {
+            class:
+              "w-screen flex justify-center items-center text-center text-9xl leading-[1.7ch] text-red-600",
+            style: {
+              transform: `translateX(-${activeIndex.value * 100}%)`,
+              transition: "transform 0.5s",
+              flex: "0 0 100%",
+            },
+          },
+          slide
+        )
+      ),
+    ];
+  });
+};
 
 const stopCarousel = () => {
   if (timer.value) {
@@ -34,6 +73,8 @@ const stopCarousel = () => {
 
 onMounted(() => {
   startCarousel();
+  slidesCount.value =
+    (useSlots().default?.().length || 0) + props.slides.length;
 });
 
 onUnmounted(() => {
@@ -46,44 +87,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="carousel">
-    <div class="slides" :style="slidesStyle">
-      <div v-for="(slide, index) in slides" :key="index" class="slide">
-        <p class="w-screen text-center text-9xl leading-[1.7ch] text-red-600">
-          {{ slide }}
-        </p>
-      </div>
-    </div>
+  <div class="flex w-full flex-row overflow-hidden">
+    <render />
   </div>
 </template>
-
-<style scoped>
-.carousel {
-  width: 100%;
-  overflow: hidden;
-}
-
-.slides {
-  display: flex;
-  transition: transform 0.5s;
-}
-
-.slide {
-  flex: 0 0 100%;
-  width: 100%;
-}
-
-.slide.active {
-  opacity: 1;
-}
-
-.slide-enter-active {
-  opacity: 1;
-  transform: translateX(-100%);
-}
-
-.slide-leave-active {
-  opacity: 0;
-  transform: translateX(100%);
-}
-</style>

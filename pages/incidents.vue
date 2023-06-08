@@ -45,14 +45,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex h-screen flex-col justify-between text-white">
-    <div class="checkered-background"></div>
-    <TextCarousel
-      v-if="incidentDetails.length"
-      :slides="['SERVICE ADVISORY', ...incidentDetails]"
-      @slide-end="onSlideEnd"
-    />
-    <div class="checkered-background"></div>
+  <div class="h-screen">
+    <TextCarousel @slide-end="onSlideEnd" :slides="incidentDetails">
+      <div class="flex h-screen flex-col justify-between">
+        <div class="checkered-background"></div>
+        <p class="text-center text-9xl leading-[1.7ch] text-red-600">
+          SERVICE ADVISORY
+        </p>
+        <div class="checkered-background"></div>
+      </div>
+    </TextCarousel>
   </div>
 </template>
 

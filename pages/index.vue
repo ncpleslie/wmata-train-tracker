@@ -17,7 +17,7 @@ const {
 const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
 
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
-useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
+useMountedInterval(refreshIncidents, 2000);
 
 const routeOnAreaTap = async (route: route) => {
   await router.push(route);
@@ -29,7 +29,7 @@ watch(incidentData, () => {
     incidentData.value?.incidents.length > 0
   ) {
     trainStore.setIncidents(incidentData.value.incidents);
-    router.push("/incidents");
+    navigateTo("/incidents");
   }
 });
 </script>

@@ -6,7 +6,7 @@ const router = useRouter();
 </script>
 
 <template>
-  <div>
+  <div class="stations">
     <ScrollableStationList
       v-if="data"
       :stations="data.stations"
@@ -24,3 +24,9 @@ const router = useRouter();
     </ErrorPopup>
   </div>
 </template>
+
+<style scoped>
+.stations {
+  font-family: unset;
+}
+</style>
