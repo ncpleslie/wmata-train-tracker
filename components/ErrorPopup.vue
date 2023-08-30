@@ -63,10 +63,15 @@ interface ErrorPopupProps {
 const props = defineProps<ErrorPopupProps>();
 const emit = defineEmits<{ (e: "onClose"): void }>();
 
-const isOpen = ref(props.open);
+const isOpen = ref(false);
 
 const closeModal = () => {
   isOpen.value = false;
   emit("onClose");
 };
+
+watch(
+  () => props.open,
+  () => (isOpen.value = props.open)
+);
 </script>

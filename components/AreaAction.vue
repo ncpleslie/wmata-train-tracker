@@ -1,8 +1,9 @@
 <script setup lang="ts">
+type syncAsyncFunction = () => void | Promise<void>;
 interface AreaActionProps {
-  onLeftTap?: () => Promise<void>;
-  onMiddleTap?: () => Promise<void>;
-  onRightTap?: () => Promise<void>;
+  onLeftTap?: syncAsyncFunction;
+  onMiddleTap?: syncAsyncFunction;
+  onRightTap?: syncAsyncFunction;
 }
 
 const props = defineProps<AreaActionProps>();

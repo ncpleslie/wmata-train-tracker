@@ -4,6 +4,8 @@ import TrainEntity from "~/models/train.entity";
 
 const [parent] = useAutoAnimate();
 
+const maxDestinationLength = 8;
+
 interface TrainArrivalBoardProps {
   trains: TrainEntity[];
 }
@@ -28,7 +30,9 @@ defineProps<TrainArrivalBoardProps>();
     >
       <p class="col-span-1">{{ train.line }}</p>
       <p class="col-span-2">{{ train.car }}</p>
-      <p class="col-span-3">{{ train.destination }}</p>
+      <p class="col-span-3">
+        {{ train.destination.substring(0, maxDestinationLength) }}
+      </p>
       <p class="col-span-2 justify-self-end">{{ train.min }}</p>
     </div>
   </div>

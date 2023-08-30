@@ -16,7 +16,13 @@ export const useTrainStore = defineStore(
       selectedStation.value = station;
     };
 
-    const setIncidents = (newIncidents: IncidentEntity[]) => {
+    const setIncidents = (newIncidents?: IncidentEntity[]) => {
+      if (!newIncidents || newIncidents.length === 0) {
+        incidents.value = [];
+
+        return;
+      }
+
       incidents.value = newIncidents;
     };
 

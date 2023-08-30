@@ -19,39 +19,63 @@ const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
 useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
 
+const hasIncidents = computed(
+  () =>
+    (incidentData.value?.incidents &&
+      incidentData.value?.incidents.length > 0) ||
+    false
+);
+
 const routeOnAreaTap = async (route: route) => {
   await router.push(route);
 };
 
-watch(incidentData, () => {
-  if (
-    incidentData.value?.incidents &&
-    incidentData.value?.incidents.length > 0
-  ) {
-    trainStore.setIncidents(incidentData.value.incidents);
-    router.push("/incidents");
+const onSeeIncidents = () => {
+  if (hasIncidents.value) {
+    navigateTo("/incidents");
   }
+};
+
+const onMiddleTapped = () => {
+  refreshTrains();
+  refreshIncidents();
+};
+
+onMounted(() => {
+  refreshTrains();
+  refreshIncidents();
 });
+
+watch(incidentData, () =>
+  trainStore.setIncidents(incidentData?.value?.incidents)
+);
 </script>
 
 <template>
   <div>
     <MinSizeWarning :min-width="AppConstants.minScreenSize" class="trains">
       <AreaAction
-        :on-middle-tap="refreshTrains"
-        :on-right-tap="() => routeOnAreaTap('stations')"
+        :on-left-tap="() => routeOnAreaTap('stations')"
+        :on-middle-tap="onMiddleTapped"
+        :on-right-tap="() => routeOnAreaTap('incidents')"
       >
         <div v-if="trainData" class="flex h-screen flex-col justify-between">
           <TrainArrivalBoard class="trains" :trains="trainData.trains" />
-          <div class="mb-2 flex flex-row">
+          <div class="mb-2 flex flex-row items-center gap-4">
             <SublineText
               class="trains mr-auto w-1/2 truncate text-4xl text-gray-700"
             >
               {{ trainStore.selectedStation?.name }}
             </SublineText>
             <ClientOnly>
+              <IncidentNotification
+                v-if="hasIncidents"
+                @on-see-incidents="onSeeIncidents"
+              />
+            </ClientOnly>
+            <ClientOnly>
               <LastUpdated
-                class="trains ml-auto"
+                class="trains"
                 :last-updated="new Date(trainData.lastUpdated)"
               />
             </ClientOnly>

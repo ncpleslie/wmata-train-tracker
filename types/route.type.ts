@@ -1,1 +1,1 @@
-export type route = "stations" | "/";
+export type route = "incidents" | "stations" | "/";
