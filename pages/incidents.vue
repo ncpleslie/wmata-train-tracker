@@ -10,7 +10,11 @@ const { incidents } = toRefs(trainStore);
  */
 const incidentDetails = computed(() => {
   return incidents.value.reduce(
-    (acc: string[], { description }: { description: string }) => {
+    (acc: string[], { description, linesAffected }) => {
+      const affected =
+        linesAffected.length > 0
+          ? `Affected Lines: ${linesAffected.join(" ")}`
+          : "";
       if (description.length > AppConstants.maxIncidentTextLength) {
         // Split the string into multiple slides but only after a word.
         const splitStrings = description.match(
@@ -20,10 +24,13 @@ const incidentDetails = computed(() => {
           )
         );
         if (splitStrings) {
+          splitStrings[splitStrings.length - 1] = `${
+            splitStrings[splitStrings.length - 1]
+          } ${affected}`;
           return [...acc, ...splitStrings];
         }
       } else {
-        return [...acc, description];
+        return [...acc, `${description} ${affected} `];
       }
 
       return acc;
@@ -46,22 +53,21 @@ onMounted(() => {
 
 <template>
   <div class="h-screen">
-    <TextCarousel @slide-end="onSlideEnd" :slides="incidentDetails">
-      <div class="flex h-screen flex-col justify-between">
-        <div class="checkered-background"></div>
-        <p class="text-center text-9xl leading-[1.7ch] text-red-600">
-          SERVICE ADVISORY
-        </p>
-        <div class="checkered-background"></div>
-      </div>
-    </TextCarousel>
+    <div class="flex h-screen flex-col justify-between gap-8">
+      <div class="checkered-background"></div>
+      <h1 class="text-center text-7xl leading-[1.7ch] text-red-600">
+        SERVICE ADVISORY
+      </h1>
+      <TextCarousel :slides="incidentDetails" @slide-end="onSlideEnd" />
+      <div class="checkered-background"></div>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .checkered-background {
   width: 100%;
-  height: 133px;
+  height: 50px;
   background-image: linear-gradient(
       45deg,
       #fbbf24 25%,
@@ -76,7 +82,7 @@ onMounted(() => {
       transparent 75%,
       #fbbf24 75%
     );
-  background-size: 133.5px 133.5px;
-  background-position: 66.5px 133px, 133px 66.5px;
+  background-size: 50px 50px;
+  background-position: 25px 50px, 50px 25px;
 }
 </style>

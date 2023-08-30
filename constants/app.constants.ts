@@ -19,7 +19,7 @@ export default class AppConstants {
    * The maximum length of the incident text for each slide.
    * Note: This could change depending on screen size.
    */
-  public static readonly maxIncidentTextLength = 70;
+  public static readonly maxIncidentTextLength = 200;
 
   /**
    * The length of time to show each incident slide.

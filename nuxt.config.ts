@@ -30,7 +30,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     wmataApiKey: "",
     baseWmataUrl: "https://api.wmata.com",
-    useMockTrainService: "true",
+    useMockTrainService: false,
     public: {
       refreshInMs: 60000,
       incidentRefreshInMs: 120000,
