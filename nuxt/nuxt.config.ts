@@ -61,4 +61,10 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: "Headless",
   },
+  components: [{ path: "../frontend/src/components" }],
+  tailwindcss: {
+    config: {
+      content: ["../frontend/src/components/**/*.{js,vue,ts}"],
+    },
+  },
 });
