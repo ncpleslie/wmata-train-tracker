@@ -1,4 +1,5 @@
 import IncidentsResponseEntity from "~/models/incidents_response.entity";
+import StationEntity from "~/models/station.entity";
 import StationsResponseEntity from "~/models/stations_response.entity";
 import TrainsResponseEntity from "~/models/trains_response.entity";
 
@@ -24,6 +25,15 @@ export default interface ITrainService {
    * @see https://developer.wmata.com/docs/services/547636a6f9182302184cda78/operations/547636a6f918230da855363f
    */
   getTrains(stationId: string): Promise<TrainsResponseEntity>;
+
+  /**
+   * Retrieves a station based on the provided id.
+   * @param stationId The station id.
+   * @throws - An error if the request fails.
+   * @throws - An error if the response is invalid.
+   * @see https://developer.wmata.com/docs/services/5476364f031f590f38092507/operations/5476364f031f5909e4fe3310?
+   */
+  getStationById(stationId: string): Promise<StationEntity>;
 
   /**
    * Retrieves stations from the train service.

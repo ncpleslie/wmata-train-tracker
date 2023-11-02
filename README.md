@@ -6,7 +6,8 @@ WMATA train tracking application for monitoring train arrival times at your stat
 
 Check it out at https://wmata-train-tracking.vercel.app/.
 
-Tap/Click the right side of the screen to set your station.
+Tap/Click the left side of the screen to set your station.
+Tap/Click the right side to see incidents, if there are any.
 
 ## About
 

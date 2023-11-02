@@ -4,6 +4,7 @@ import incidents from "./incidents.json";
 import IncidentsResponseEntity from "~/models/incidents_response.entity";
 import StationsResponseEntity from "~/models/stations_response.entity";
 import TrainsResponseEntity from "~/models/trains_response.entity";
+import StationEntity from "~/models/station.entity";
 
 export default class MockTrainService implements ITrainService {
   public getIncidents(): Promise<IncidentsResponseEntity> {
@@ -16,6 +17,11 @@ export default class MockTrainService implements ITrainService {
     return new Promise((resolve) => {
       resolve(new TrainsResponseEntity(trains));
     });
+  }
+
+  public getStationById(stationId: string): Promise<StationEntity> {
+    // TODO: Implement this.
+    throw new Error("Method not implemented.");
   }
 
   public getStations(): Promise<StationsResponseEntity> {

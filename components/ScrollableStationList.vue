@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { useResizeObserver } from "@vueuse/core";
 import StationEntity from "~/models/station.entity";
-import { useTrainStore } from "~/stores/train.store";
 import AppConstants from "~/constants/app.constants";
 
 interface ScrollableStationListProps {
   stations: StationEntity[];
+  selectedStation: StationEntity;
+  currentPage: number;
 }
 
 const props = defineProps<ScrollableStationListProps>();
 
-const stationStore = useTrainStore();
-const { selectedStation, currentPage } = toRefs(stationStore);
 const parent = ref<HTMLDivElement | null>(null);
 
 const totalPerPage = ref(0);
@@ -20,7 +19,7 @@ const currentHeight = ref(0);
 const currentWidth = ref(0);
 
 const displayedItems = computed(() => {
-  const startIndex = currentPage.value * totalPerPage.value;
+  const startIndex = props.currentPage * totalPerPage.value;
   const endIndex = startIndex + totalPerPage.value;
   return props.stations.slice(startIndex, endIndex);
 });
@@ -44,7 +43,7 @@ useResizeObserver(parent, () => {
 
   // Prevents losing page when reloading component.
   if (!firstObservation.value) {
-    currentPage.value = 0;
+    emit("onSetPage", 0);
   }
 
   firstObservation.value = false;
@@ -55,17 +54,16 @@ const totalPages = computed(() =>
 );
 
 const nextPage = () => {
-  currentPage.value = (currentPage.value + 1) % totalPages.value;
+  emit("onSetPage", (props.currentPage + 1) % totalPages.value);
 };
 
 const previousPage = () => {
-  const newPage = currentPage.value - 1;
-  currentPage.value = newPage >= 0 ? newPage : totalPages.value - 1;
+  const newPage = props.currentPage - 1;
+  emit("onSetPage", newPage >= 0 ? newPage : totalPages.value - 1);
 };
 
 const onStationClicked = (station: StationEntity) => {
-  emit("stationClicked");
-  stationStore.setSelectedStation(station);
+  emit("stationClicked", station);
 };
 
 const onBackedClicked = () => {
@@ -73,8 +71,9 @@ const onBackedClicked = () => {
 };
 
 const emit = defineEmits<{
-  (e: "stationClicked"): void;
-  (e: "backClicked"): void;
+  stationClicked: [station: StationEntity];
+  backClicked: [];
+  onSetPage: [page: number];
 }>();
 </script>
 
@@ -118,5 +117,3 @@ const emit = defineEmits<{
     </BaseButton>
   </div>
 </template>
-
-<style scoped></style>

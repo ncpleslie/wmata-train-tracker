@@ -1,5 +1,6 @@
 import ITrainService from "./interfaces/train-service.interface";
 import IncidentsResponseEntity from "~/models/incidents_response.entity";
+import StationEntity from "~/models/station.entity";
 import StationsResponseEntity from "~/models/stations_response.entity";
 import TrainsResponseEntity from "~/models/trains_response.entity";
 
@@ -8,37 +9,33 @@ export default class TrainService implements ITrainService {
 
   public async getIncidents() {
     const response = await this.queryWmata("/Incidents.svc/json/Incidents");
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw new Error(data.Message);
-    }
 
-    return new IncidentsResponseEntity(data.Incidents);
+    return new IncidentsResponseEntity(response.Incidents);
   }
 
   public async getTrains(stationId: string, max = 5) {
     const response = await this.queryWmata(
       `/StationPrediction.svc/json/GetPrediction/${stationId}`
     );
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw new Error(data.Message);
-    }
 
-    data.Trains = data.Trains.slice(0, max);
+    response.Trains = response.Trains.slice(0, max);
     return new TrainsResponseEntity(
-      data.Trains.length === 0 ? [] : data.Trains
+      response.Trains.length === 0 ? [] : response.Trains
     );
+  }
+
+  public async getStationById(stationId: string) {
+    const response = await this.queryWmata(
+      `/Rail.svc/json/jStationInfo?StationCode=${stationId}`
+    );
+
+    return new StationEntity(response);
   }
 
   public async getStations() {
     const response = await this.queryWmata("/Rail.svc/json/jStations");
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw new Error(data.Message);
-    }
 
-    return new StationsResponseEntity(data.Stations);
+    return new StationsResponseEntity(response.Stations);
   }
 
   /**
@@ -47,10 +44,16 @@ export default class TrainService implements ITrainService {
    * @returns - The response from the WMATA API.
    */
   private async queryWmata(endpoint: string) {
-    return await fetch(`${this.baseUrl}${endpoint}`, {
+    const response = await fetch(`${this.baseUrl}${endpoint}`, {
       headers: {
         api_key: this.apiKey,
       },
     });
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw new Error(data.Message);
+    }
+
+    return data;
   }
 }

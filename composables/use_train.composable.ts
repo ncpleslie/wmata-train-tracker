@@ -7,6 +7,7 @@ type RouterOutput = inferRouterOutputs<AppRouter>;
 type getIncidentsOutput = RouterOutput["train"]["getIncidents"];
 type GetTrainsOutput = RouterOutput["train"]["getTrains"];
 type GetStationOutput = RouterOutput["train"]["getStations"];
+type GetStationByIdOutput = RouterOutput["train"]["getStationById"];
 
 type ErrorOutput = TRPCClientError<AppRouter>;
 
@@ -37,6 +38,17 @@ export function useGetTrains() {
     $client.train.getTrains.query({
       stationId: trainStore.selectedStation?.code,
     })
+  );
+}
+
+export function useGetStationById(stationId: string) {
+  const { $client } = useNuxtApp();
+  return useAsyncData<GetStationByIdOutput, ErrorOutput>(
+    () =>
+      $client.train.getStationById.query({
+        stationId,
+      }),
+    { immediate: false }
   );
 }
 

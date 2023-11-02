@@ -17,4 +17,13 @@ export const trainRouter = router({
   getStations: publicProcedure.query(async ({ ctx }) => {
     return await ctx.trainService.getStations();
   }),
+  getStationById: publicProcedure
+    .input(
+      z.object({
+        stationId: z.string().length(3),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      return await ctx.trainService.getStationById(input.stationId);
+    }),
 });

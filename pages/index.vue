@@ -6,7 +6,10 @@ import AppConstants from "~/constants/app.constants";
 
 const runtimeConfig = useRuntimeConfig();
 const router = useRouter();
+const nuxtRoute = useRoute();
 const trainStore = useTrainStore();
+
+const stationId = ref(nuxtRoute.query.stationId?.toString() || "");
 
 const {
   data: trainData,
@@ -15,6 +18,9 @@ const {
   pending: trainIsRefreshing,
 } = useGetTrains();
 const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
+const { data: station, refresh: refreshStation } = useGetStationById(
+  stationId.value
+);
 
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
 useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
@@ -49,40 +55,46 @@ onMounted(() => {
 watch(incidentData, () =>
   trainStore.setIncidents(incidentData?.value?.incidents)
 );
+
+watch(
+  () => nuxtRoute.query.stationId,
+  () => {
+    if (!nuxtRoute.query.stationId) {
+      return;
+    }
+    stationId.value = nuxtRoute.query.stationId.toString();
+    if (stationId.value === trainStore.selectedStation?.code) {
+      return;
+    }
+
+    refreshStation();
+  },
+  { immediate: true }
+);
+
+watch(station, () => {
+  if (!station.value) {
+    return;
+  }
+  trainStore.setSelectedStation(station.value);
+});
 </script>
 
 <template>
   <div>
     <MinSizeWarning :min-width="AppConstants.minScreenSize" class="trains">
-      <AreaAction
-        :on-left-tap="() => routeOnAreaTap('stations')"
-        :on-middle-tap="onMiddleTapped"
-        :on-right-tap="() => routeOnAreaTap('incidents')"
-      >
-        <div v-if="trainData" class="flex h-screen flex-col justify-between">
-          <TrainArrivalBoard class="trains" :trains="trainData.trains" />
-          <div class="mb-2 flex flex-row items-center gap-4">
-            <SublineText
-              class="trains mr-auto w-1/2 truncate text-4xl text-gray-700"
-            >
-              {{ trainStore.selectedStation?.name }}
-            </SublineText>
-            <ClientOnly>
-              <IncidentNotification
-                v-if="hasIncidents"
-                @on-see-incidents="onSeeIncidents"
-              />
-            </ClientOnly>
-            <ClientOnly>
-              <LastUpdated
-                class="trains"
-                :last-updated="new Date(trainData.lastUpdated)"
-              />
-            </ClientOnly>
-          </div>
-        </div>
-        <LoadingIndicator v-if="trainIsRefreshing" />
-      </AreaAction>
+      <ClientOnly>
+        <HomeView
+          :train-data="trainData"
+          :selected-station-name="trainStore.selectedStation?.name"
+          :has-incidents="hasIncidents"
+          :is-refreshing="trainIsRefreshing"
+          @on-left-tap="() => routeOnAreaTap('stations')"
+          @on-middle-tap="onMiddleTapped"
+          @on-right-tap="() => routeOnAreaTap('incidents')"
+          @on-see-incidents="onSeeIncidents"
+        />
+      </ClientOnly>
     </MinSizeWarning>
     <ErrorPopup
       :open="(!trainIsRefreshing && !trainData) || Boolean(trainError?.message)"
