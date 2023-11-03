@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useAutoAnimate } from "@formkit/auto-animate/vue";
-import TrainEntity from "~/models/train.entity";
+import { TrainEntity } from "@wmata-train-tracker/shared";
 
 const [parent] = useAutoAnimate();
 

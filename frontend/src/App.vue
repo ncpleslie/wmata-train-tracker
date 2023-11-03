@@ -1,7 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import BaseButton from "./components/BaseButton.vue";
+</script>
 
 <template>
   <div>
+    <BaseButton primary>Test</BaseButton>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
     </a>

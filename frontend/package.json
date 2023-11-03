@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@wmata-train-tracker/frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -10,14 +10,19 @@
   },
   "dependencies": {
     "@formkit/auto-animate": "^0.8.0",
+    "@wmata-train-tracker/shared": "workspace:^",
     "vue": "^3.3.4"
   },
   "devDependencies": {
     "@headlessui/vue": "^1.7.16",
+    "@types/node": "^20.8.10",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vueuse/core": "^10.5.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5",
     "typescript": "^5.0.2",
+    "unplugin-auto-import": "^0.16.7",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
   }

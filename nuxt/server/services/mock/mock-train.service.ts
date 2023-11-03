@@ -1,10 +1,12 @@
 import ITrainService from "../interfaces/train-service.interface";
 import trains from "./trains.json";
 import incidents from "./incidents.json";
-import IncidentsResponseEntity from "~/models/incidents_response.entity";
-import StationsResponseEntity from "~/models/stations_response.entity";
-import TrainsResponseEntity from "~/models/trains_response.entity";
-import StationEntity from "~/models/station.entity";
+import {
+  IncidentsResponseEntity,
+  StationEntity,
+  StationsResponseEntity,
+  TrainsResponseEntity,
+} from "@wmata-train-tracker/shared";
 
 export default class MockTrainService implements ITrainService {
   public getIncidents(): Promise<IncidentsResponseEntity> {

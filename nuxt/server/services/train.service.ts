@@ -1,8 +1,10 @@
 import ITrainService from "./interfaces/train-service.interface";
-import IncidentsResponseEntity from "~/models/incidents_response.entity";
-import StationEntity from "~/models/station.entity";
-import StationsResponseEntity from "~/models/stations_response.entity";
-import TrainsResponseEntity from "~/models/trains_response.entity";
+import {
+  IncidentsResponseEntity,
+  StationEntity,
+  StationsResponseEntity,
+  TrainsResponseEntity,
+} from "@wmata-train-tracker/shared";
 
 export default class TrainService implements ITrainService {
   constructor(private baseUrl: string, private apiKey: string) {}

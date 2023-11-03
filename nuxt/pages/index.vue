@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { ErrorPopup, HomeView } from "@wmata-train-tracker/frontend";
 import { useGetTrains } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
 import { route } from "~/types/route.type";
-import AppConstants from "~/constants/app.constants";
 
 const runtimeConfig = useRuntimeConfig();
 const router = useRouter();
@@ -82,34 +82,29 @@ watch(station, () => {
 
 <template>
   <div>
-    <MinSizeWarning :min-width="AppConstants.minScreenSize" class="trains">
-      <ClientOnly>
-        <HomeView
-          :train-data="trainData"
-          :selected-station-name="trainStore.selectedStation?.name"
-          :has-incidents="hasIncidents"
-          :is-refreshing="trainIsRefreshing"
-          @on-left-tap="() => routeOnAreaTap('stations')"
-          @on-middle-tap="onMiddleTapped"
-          @on-right-tap="() => routeOnAreaTap('incidents')"
-          @on-see-incidents="onSeeIncidents"
-        />
-      </ClientOnly>
-    </MinSizeWarning>
-    <ErrorPopup
-      :open="(!trainIsRefreshing && !trainData) || Boolean(trainError?.message)"
-      @on-close="refreshTrains"
-    >
-      <template #error-message>
-        Something went wrong while attempting to refresh
-      </template>
-      <template #close-message>Try again?</template>
-    </ErrorPopup>
+    <ClientOnly>
+      <HomeView
+        v-if="trainData"
+        :train-data="trainData"
+        :selected-station-name="trainStore.selectedStation?.name"
+        :has-incidents="hasIncidents"
+        :is-refreshing="trainIsRefreshing"
+        @on-left-tap="() => routeOnAreaTap('stations')"
+        @on-middle-tap="onMiddleTapped"
+        @on-right-tap="() => routeOnAreaTap('incidents')"
+        @on-see-incidents="onSeeIncidents"
+      />
+      <ErrorPopup
+        :open="
+          (!trainIsRefreshing && !trainData) || Boolean(trainError?.message)
+        "
+        @on-close="refreshTrains"
+      >
+        <template #error-message>
+          Something went wrong while attempting to refresh
+        </template>
+        <template #close-message>Try again?</template>
+      </ErrorPopup>
+    </ClientOnly>
   </div>
 </template>
-
-<style scoped>
-.trains {
-  line-height: 1.7ch;
-}
-</style>

@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import IncidentEntity from "~/models/incident.entity";
-import StationEntity from "~/models/station.entity";
+import { IncidentEntity, StationEntity } from "@wmata-train-tracker/shared";
 
 /**
  * Store for the app.

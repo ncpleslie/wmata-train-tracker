@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { StationEntity } from "@wmata-train-tracker/shared";
 import { useGetStations } from "~/composables/use_train.composable";
-import StationEntity from "~/models/station.entity";
 import { useTrainStore } from "~/stores/train.store";
 
 const stationStore = useTrainStore();

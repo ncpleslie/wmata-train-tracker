@@ -1,0 +1,7 @@
+{
+  "name": "@wmata-train-tracker/shared",
+  "private": "true",
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

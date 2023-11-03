@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import AppConstants from "~/constants/app.constants";
-import IncidentEntity from "~/models/incident.entity";
+import { AppConstants } from "@wmata-train-tracker/shared";
+import { IncidentEntity } from "@wmata-train-tracker/shared";
+import TextCarousel from "./TextCarousel.vue";
 
 interface IncidentsViewProps {
   incidents: IncidentEntity[];

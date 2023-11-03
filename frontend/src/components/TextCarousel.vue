@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppConstants from "~/constants/app.constants";
+import { AppConstants } from "@wmata-train-tracker/shared";
 
 interface TextCarouselProps {
   slides: string[];

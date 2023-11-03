@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useResizeObserver } from "@vueuse/core";
-import StationEntity from "~/models/station.entity";
-import AppConstants from "~/constants/app.constants";
+import { StationEntity } from "@wmata-train-tracker/shared";
+import { AppConstants } from "@wmata-train-tracker/shared";
+import BaseButton from "./BaseButton.vue";
 
 interface ScrollableStationListProps {
   stations: StationEntity[];

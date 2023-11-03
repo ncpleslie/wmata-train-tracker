@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "@wmata-train-tracker/nuxt-app",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -36,6 +36,8 @@
     "@pinia/nuxt": "0.4.11",
     "@trpc/client": "10.26.0",
     "@trpc/server": "10.26.0",
+    "@wmata-train-tracker/frontend": "workspace:^",
+    "@wmata-train-tracker/shared": "workspace:^",
     "superjson": "1.12.3",
     "trpc-nuxt": "0.10.1",
     "zod": "3.21.4"
