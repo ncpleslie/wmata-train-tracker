@@ -25,7 +25,11 @@
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "index.ts"
+    "index.ts",
+    "auto-imports.d.ts",
+    "wailsjs/**/*.ts",
+    "wailsjs/**/*.d.ts"
   ],
+
   "references": [{ "path": "./tsconfig.node.json" }]
 }
