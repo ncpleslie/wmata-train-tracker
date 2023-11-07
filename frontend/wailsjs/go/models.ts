@@ -1,4 +1,4 @@
-export namespace app {
+export namespace train {
 	
 	export class Train {
 	    car?: string;

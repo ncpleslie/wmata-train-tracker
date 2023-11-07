@@ -1,4 +1,4 @@
-export const query = <T, E>(awaitable: Promise<T>) => {
+export const useQuery = <T, E>(awaitable: Promise<T>) => {
   const data = ref<T>();
   const error = ref<E>();
   const isLoading = ref(false);

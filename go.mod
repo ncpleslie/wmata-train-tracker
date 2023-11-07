@@ -2,7 +2,11 @@ module github.com/ncpleslie/wmata-train-tracker
 
 go 1.18
 
-require github.com/wailsapp/wails/v2 v2.6.0
+require (
+	github.com/caarlos0/env/v10 v10.0.0
+	github.com/joho/godotenv v1.5.1
+	github.com/wailsapp/wails/v2 v2.6.0
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect

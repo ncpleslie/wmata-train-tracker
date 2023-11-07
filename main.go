@@ -7,6 +7,8 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/linux"
+
+	app "github.com/ncpleslie/wmata-train-tracker/app"
 )
 
 //go:embed all:frontend/dist
@@ -16,10 +18,8 @@ var assets embed.FS
 var icon []byte
 
 func main() {
-	// Create an instance of the app structure
-	app := NewApp()
+	application := app.NewApp()
 
-	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "WMATA Train Tracker",
 		Width:  800,
@@ -29,9 +29,9 @@ func main() {
 		},
 		Frameless:        false,
 		BackgroundColour: &options.RGBA{R: 0, G: 0, B: 0, A: 0},
-		OnStartup:        app.startup,
+		OnStartup:        application.Startup,
 		Bind: []interface{}{
-			app,
+			application,
 		},
 		Linux: &linux.Options{
 			Icon:                icon,

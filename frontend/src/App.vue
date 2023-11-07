@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { GetTrainsByStationId } from "../wailsjs/go/main/App";
+import { GetTrainsByStationId } from "../wailsjs/go/app/App";
 import { TrainsResponseEntity } from "@wmata-train-tracker/shared";
 import { LogPrint } from "../wailsjs/runtime/runtime";
 import HomeView from "./components/HomeView.vue";
-import { query } from "./composables/query";
+import { useQuery } from "./composables/query";
 
 const selectedStationName = ref<string>();
 
-const { data, error, isLoading } = query<TrainsResponseEntity, Error>(
+const { data, error, isLoading } = useQuery<TrainsResponseEntity, Error>(
   GetTrainsByStationId("B03")
 );
 
