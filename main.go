@@ -21,15 +21,20 @@ func main() {
 	application := app.NewApp()
 
 	err := wails.Run(&options.App{
-		Title:  "WMATA Train Tracker",
-		Width:  800,
-		Height: 480,
+		Title:     "WMATA Train Tracker",
+		Width:     800,
+		Height:    480,
+		MinWidth:  800,
+		MinHeight: 480,
+		MaxWidth:  800,
+		MaxHeight: 480,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
 		Frameless:        false,
 		BackgroundColour: &options.RGBA{R: 0, G: 0, B: 0, A: 0},
 		OnStartup:        application.Startup,
+		OnDomReady:       application.OnReady,
 		Bind: []interface{}{
 			application,
 		},
