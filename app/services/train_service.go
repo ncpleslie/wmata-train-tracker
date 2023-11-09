@@ -1,6 +1,7 @@
 package train
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -9,6 +10,31 @@ import (
 // type TRPCMetaRequest[T any] struct {
 // 	Values T `json:"values"`
 // }
+
+// Custom time that could be returned from the WMATA API
+// E.g. Time may be in the format of "2023-10-09T06:40:46"
+// which is not handled by JSON Unmarshal.
+// This will handle appending the "Z" at the end.
+type WmataTime time.Time
+
+// Unmarshall a JSON time.Time value.
+// If it is missing a "Z", append it with a "Z"
+// and unmarshall as usual.
+func (m *WmataTime) UnmarshalJSON(data []byte) error {
+	if string(data) == "null" || string(data) == `""` {
+		return nil
+	}
+
+	timezoneIdentifier := []byte{'Z'}
+	if bytes.Contains(data, timezoneIdentifier) {
+		return (*time.Time)(m).UnmarshalJSON(data)
+	}
+
+	index := len(data) - 1
+	data = append(data[:index], append(timezoneIdentifier, data[index:]...)...)
+
+	return json.Unmarshal(data, (*time.Time)(m))
+}
 
 type TRPCRequest[T any] struct {
 	Json T `json:"json"`
@@ -49,6 +75,22 @@ type Train struct {
 type TrainsResponse struct {
 	Trains      []Train   `json:"trains"`
 	LastUpdated time.Time `json:"lastUpdated"`
+}
+
+type IncidentRequest struct {
+	StationId string `json:"stationId"`
+}
+
+type Incident struct {
+	DateUpdated   WmataTime `json:"dateUpdated"`
+	Description   string    `json:"description"`
+	IncidentID    string    `json:"incidentId"`
+	IncidentType  string    `json:"incidentType"`
+	LinesAffected []string  `json:"linesAffected"`
+}
+
+type IncidentsResponse struct {
+	Incidents []Incident `json:"incidents"`
 }
 
 func createHTTPClient() *http.Client {

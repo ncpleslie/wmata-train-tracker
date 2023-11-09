@@ -1,12 +1,17 @@
 <script setup lang="ts">
 // import { GetTrainsByStationId } from "../wailsjs/go/app/App";
-import { TrainsResponseEntity } from "@wmata-train-tracker/shared";
+import {
+  IncidentsResponseEntity,
+  TrainsResponseEntity,
+} from "@wmata-train-tracker/shared";
 import { EventsOn } from "../wailsjs/runtime/runtime";
 import HomeView from "./components/HomeView.vue";
 // import { useQuery } from "./composables/query";
 
 const selectedStationName = ref<string>();
 const data = ref<TrainsResponseEntity>();
+const hasIncidents = ref(false);
+const isRefreshing = ref(false);
 
 // const { data, error, isLoading } = useQuery<TrainsResponseEntity, Error>(
 //   GetTrainsByStationId("B03")
@@ -15,6 +20,11 @@ const data = ref<TrainsResponseEntity>();
 EventsOn("trains", (trains: TrainsResponseEntity) => {
   console.log(trains);
   data.value = trains;
+});
+
+EventsOn("incidents", (incidents: IncidentsResponseEntity) => {
+  console.log(incidents);
+  hasIncidents.value = incidents.incidents.length > 0;
 });
 
 // watch(error, () => {
@@ -27,8 +37,8 @@ EventsOn("trains", (trains: TrainsResponseEntity) => {
     <HomeView
       :train-data="data"
       :selected-station-name="selectedStationName"
-      :has-incidents="false"
-      :is-refreshing="false"
+      :has-incidents="hasIncidents"
+      :is-refreshing="isRefreshing"
     />
   </main>
 </template>
