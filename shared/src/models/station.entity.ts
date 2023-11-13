@@ -101,5 +101,5 @@ export default class StationEntity {
    * The address of the station.
    * @example { Street: "607 13th St. NW", City: "Washington", State: "DC", Zip: "20005" }
    */
-  public address: object;
+  public address: StationAddressEntity;
 }

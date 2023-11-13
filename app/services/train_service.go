@@ -93,6 +93,34 @@ type IncidentsResponse struct {
 	Incidents []Incident `json:"incidents"`
 }
 
+type StationRequest struct {
+}
+
+type StationsResponse struct {
+	Stations []Station
+}
+
+type Station struct {
+	Code             string         `json:"code"`
+	Name             string         `json:"name"`
+	StationTogether1 string         `json:"stationTogether1"`
+	StationTogether2 string         `json:"stationTogether2"`
+	LineCode1        string         `json:"lineCode1,omitempty"`
+	LineCode2        string         `json:"lineCode2,omitempty"`
+	LineCode3        string         `json:"lineCode3,omitempty"`
+	LineCode4        string         `json:"lineCode4,omitempty"`
+	Lat              float64        `json:"lat"`
+	Lon              float64        `json:"lon"`
+	Address          StationAddress `json:"address"`
+}
+
+type StationAddress struct {
+	Street string `json:"street"`
+	City   string `json:"city"`
+	State  string `json:"state"`
+	Zip    string `json:"zip"`
+}
+
 func createHTTPClient() *http.Client {
 	tr := &http.Transport{
 		MaxIdleConns:       10,

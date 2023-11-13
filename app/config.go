@@ -14,6 +14,7 @@ type Config struct {
 	TrainRoute              string `env:"TRAIN_ROUTE,required"`
 	IncidentUpdateInSeconds int    `env:"TRAIN_UPDATE_IN_SECONDS,required"`
 	IncidentRoute           string `env:"INCIDENT_ROUTE,required"`
+	StationsRoute           string `env:"STATIONS_ROUTE,required"`
 }
 
 // Generates a Config based on the values found in a .env file found in the root directory.
