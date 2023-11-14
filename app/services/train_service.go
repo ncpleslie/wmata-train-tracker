@@ -94,10 +94,14 @@ type IncidentsResponse struct {
 }
 
 type StationRequest struct {
+	StationId string `json:"stationId"`
+}
+
+type StationsRequest struct {
 }
 
 type StationsResponse struct {
-	Stations []Station
+	Stations []Station `json:"stations"`
 }
 
 type Station struct {

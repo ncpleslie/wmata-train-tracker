@@ -5,7 +5,6 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
-    "nuxt-icon",
     "@nuxtjs/tailwindcss",
     [
       "@nuxtjs/eslint-module",

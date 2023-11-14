@@ -15,7 +15,7 @@ const emit = defineEmits<{
 
 <template>
   <button
-    class="rounded py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50"
+    class="rounded py-4 text-lg font-bold text-white transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-opacity-50 flex justify-center items-center"
     :class="[
       primary
         ? 'bg-amber-400 hover:bg-amber-500 focus:ring-amber-400'

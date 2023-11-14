@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useResizeObserver } from "@vueuse/core";
+import { Icon } from "@iconify/vue";
 import { StationEntity } from "@wmata-train-tracker/shared";
 import { AppConstants } from "@wmata-train-tracker/shared";
-import BaseButton from "./BaseButton.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 interface ScrollableStationListProps {
   stations: StationEntity[];
-  selectedStation: StationEntity;
+  selectedStation?: StationEntity;
   currentPage: number;
 }
 
@@ -86,10 +87,10 @@ const emit = defineEmits<{
         @clicked="onBackedClicked"
         @mouseovered="onBackedClicked"
       >
-        <Icon name="tabler:arrow-big-left-filled" size="2em" />
+        <Icon icon="tabler:arrow-big-left-filled" height="2em" />
       </BaseButton>
       <BaseButton class="w-full" @clicked="previousPage">
-        <Icon name="tabler:arrow-big-up-filled" size="2em" />
+        <Icon icon="tabler:arrow-big-up-filled" height="2em" />
       </BaseButton>
     </div>
     <ul
@@ -114,7 +115,7 @@ const emit = defineEmits<{
       </li>
     </ul>
     <BaseButton class="w-full" @clicked="nextPage">
-      <Icon name="tabler:arrow-big-down-filled" size="2em" />
+      <Icon icon="tabler:arrow-big-down-filled" height="2em" />
     </BaseButton>
   </div>
 </template>

@@ -18,7 +18,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      "@wails/*": ["./wailsjs/*"]
+    }
   },
   "include": [
     "src/**/*.ts",
@@ -27,9 +31,9 @@
     "src/**/*.vue",
     "index.ts",
     "auto-imports.d.ts",
+    "wailsjs/**/*.js",
     "wailsjs/**/*.ts",
     "wailsjs/**/*.d.ts"
   ],
-
   "references": [{ "path": "./tsconfig.node.json" }]
 }

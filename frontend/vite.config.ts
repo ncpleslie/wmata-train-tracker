@@ -34,6 +34,10 @@ export default defineConfig({
         find: "@",
         replacement: fileURLToPath(new URL("./src", import.meta.url)),
       },
+      {
+        find: "@wails",
+        replacement: fileURLToPath(new URL("./wailsjs", import.meta.url)),
+      },
     ],
   },
 });

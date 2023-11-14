@@ -82,29 +82,25 @@ watch(station, () => {
 
 <template>
   <div>
-    <ClientOnly>
-      <HomeView
-        v-if="trainData"
-        :train-data="trainData"
-        :selected-station-name="trainStore.selectedStation?.name"
-        :has-incidents="hasIncidents"
-        :is-refreshing="trainIsRefreshing"
-        @on-left-tap="() => routeOnAreaTap('stations')"
-        @on-middle-tap="onMiddleTapped"
-        @on-right-tap="() => routeOnAreaTap('incidents')"
-        @on-see-incidents="onSeeIncidents"
-      />
-      <ErrorPopup
-        :open="
-          (!trainIsRefreshing && !trainData) || Boolean(trainError?.message)
-        "
-        @on-close="refreshTrains"
-      >
-        <template #error-message>
-          Something went wrong while attempting to refresh
-        </template>
-        <template #close-message>Try again?</template>
-      </ErrorPopup>
-    </ClientOnly>
+    <HomeView
+      v-if="trainData"
+      :train-data="trainData"
+      :selected-station-name="trainStore.selectedStation?.name"
+      :has-incidents="hasIncidents"
+      :is-refreshing="trainIsRefreshing"
+      @on-left-tap="() => routeOnAreaTap('stations')"
+      @on-middle-tap="onMiddleTapped"
+      @on-right-tap="() => routeOnAreaTap('incidents')"
+      @on-see-incidents="onSeeIncidents"
+    />
+    <ErrorPopup
+      :open="(!trainIsRefreshing && !trainData) || Boolean(trainError?.message)"
+      @on-close="refreshTrains"
+    >
+      <template #error-message>
+        Something went wrong while attempting to refresh
+      </template>
+      <template #close-message>Try again?</template>
+    </ErrorPopup>
   </div>
 </template>

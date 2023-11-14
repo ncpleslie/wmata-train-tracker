@@ -1,38 +1,56 @@
 <script setup lang="ts">
-import { GetTrainsByStationId } from "../../wailsjs/go/app/App";
+import { GetTrains, GetSelectedStation, GetIncidents } from "@wails/go/app/App";
 import {
   IncidentsResponseEntity,
+  StationEntity,
   TrainsResponseEntity,
 } from "@wmata-train-tracker/shared";
-import { EventsOn } from "../../wailsjs/runtime/runtime";
-import HomeView from "../components/HomeView.vue";
-import { useQuery } from "../composables/query";
-import { useRouter } from "vue-router";
+import { EventsOn } from "@wails/runtime/runtime";
+import HomeView from "@/components/HomeView.vue";
+import ErrorPopup from "@/components/ErrorPopup.vue";
+import { useQuery } from "@/composables/query";
+import { Route, RuntimeEvent } from "@/constants/constants";
+import { useTypedRouter } from "@/composables/typed-router";
 
-const router = useRouter();
+const router = useTypedRouter();
 
-const selectedStationName = ref<string>();
 const data = ref<TrainsResponseEntity>();
-const hasIncidents = ref(false);
-const isRefreshing = ref(false);
+const eventIncidents = ref<IncidentsResponseEntity>();
 
 const {
   data: trainsResponse,
-  // error,
-  // isLoading,
-} = useQuery<TrainsResponseEntity, Error>(GetTrainsByStationId("B03"));
+  error: trainError,
+  isLoading: isTrainsLoading,
+  refetch,
+} = useQuery<TrainsResponseEntity>(GetTrains());
 
-EventsOn("trains", (trains: TrainsResponseEntity) => {
-  console.log(trains);
+const { data: selectedStation, isLoading: isSelectedStationLoading } =
+  useQuery<StationEntity>(GetSelectedStation());
+
+const { data: queryIncidents } = useQuery<IncidentsResponseEntity>(
+  GetIncidents()
+);
+
+const hasIncidents = computed(() =>
+  Boolean(
+    (queryIncidents.value?.incidents ?? []).length > 0 ||
+      (eventIncidents.value?.incidents ?? []).length > 0
+  )
+);
+
+const navigateToIncidents = () => {
+  if (hasIncidents.value) {
+    router.pushPath(Route.Incidents);
+  }
+};
+
+EventsOn(RuntimeEvent.trains, (trains: TrainsResponseEntity) => {
   data.value = trains;
 });
 
-EventsOn("incidents", (incidents: IncidentsResponseEntity) => {
-  console.log(incidents);
-  hasIncidents.value = incidents.incidents.length > 0;
+EventsOn(RuntimeEvent.incidents, (incidents: IncidentsResponseEntity) => {
+  eventIncidents.value = incidents;
 });
-
-const refresh = () => {};
 
 watch(trainsResponse, () => {
   if (trainsResponse.value?.trains.length !== 0) {
@@ -44,11 +62,23 @@ watch(trainsResponse, () => {
 <template>
   <HomeView
     :train-data="data"
-    :selected-station-name="selectedStationName"
+    :selected-station-name="selectedStation?.name"
     :has-incidents="hasIncidents"
-    :is-refreshing="isRefreshing"
-    @on-left-tap="router.push('/stations')"
-    @on-middle-tap="refresh"
-    @on-right-tap="router.push('/incidents')"
+    :is-refreshing="isSelectedStationLoading || isTrainsLoading"
+    @on-left-tap="router.push(Route.Stations)"
+    @on-middle-tap="refetch"
+    @on-right-tap="navigateToIncidents"
+    @on-see-incidents="navigateToIncidents"
   />
+  <ErrorPopup
+    :open="
+      (!isTrainsLoading && !trainsResponse) || Boolean(trainError?.message)
+    "
+    @on-close="refetch"
+  >
+    <template #error-message>
+      Something went wrong while attempting to refresh
+    </template>
+    <template #close-message>Try again?</template>
+  </ErrorPopup>
 </template>

@@ -138,7 +138,36 @@ export namespace train {
 		}
 	}
 	
+	export class StationsResponse {
+	    stations: Station[];
 	
+	    static createFrom(source: any = {}) {
+	        return new StationsResponse(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.stations = this.convertValues(source["stations"], Station);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class Train {
 	    car?: string;
 	    destination: string;

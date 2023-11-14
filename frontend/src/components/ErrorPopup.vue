@@ -6,7 +6,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/vue";
-import BaseButton from "./BaseButton.vue";
+import BaseButton from "@/components/BaseButton.vue";
 
 interface ErrorPopupProps {
   open: boolean;

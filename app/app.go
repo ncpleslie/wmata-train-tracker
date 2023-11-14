@@ -19,7 +19,8 @@ type App struct {
 
 // A collection of values used throughout the application
 type Data struct {
-	stationId *types.SafeStruct[string]
+	stationId   *types.SafeStruct[string]
+	stationPage *types.SafeStruct[int8]
 }
 
 // NewApp creates a new App application struct
@@ -33,21 +34,14 @@ func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.config = generateConfig()
 	a.data = Data{
-		stationId: types.NewSafeStruct(a.config.DefaultStationId),
+		stationId:   types.NewSafeStruct(a.config.DefaultStationId),
+		stationPage: types.NewSafeStruct(int8(0)),
 	}
 }
 
 func (a *App) OnReady(ctx context.Context) {
 	// Wait for the frontend to have loaded correctly before continuing.
 	time.Sleep(2 * time.Second)
-
-	go func() {
-		a.data.stationId.UpdateValue(a.config.DefaultStationId)
-		time.Sleep(2 * time.Second)
-		a.data.stationId.UpdateValue("B02")
-		time.Sleep(20 * time.Second)
-		a.data.stationId.UpdateValue("E03")
-	}()
 
 	trainsRetriever := &TrainsDataRetriever{
 		config: utils.DataRetrieverConfig{
@@ -70,10 +64,10 @@ func (a *App) OnReady(ctx context.Context) {
 	go utils.RunIntervalEvent(ctx, incidentsRetriever, incidentsRetriever.config)
 }
 
-func (a *App) GetTrainsByStationId(stationId string) (api.TrainsResponse, error) {
+func (a *App) GetTrains() (api.TrainsResponse, error) {
 	return api.QueryTrpcApiGet[api.TrainRequest, api.TrainsResponse](
 		a.config.BaseUrl+a.config.TrainRoute,
-		api.TrainRequest{StationId: stationId},
+		api.TrainRequest{StationId: a.data.stationId.ReadValue()},
 	)
 }
 
@@ -85,10 +79,29 @@ func (a *App) GetIncidents() (api.IncidentsResponse, error) {
 }
 
 func (a *App) GetStations() (api.StationsResponse, error) {
-	return api.QueryTrpcApiGet[api.StationRequest, api.StationsResponse](
+	return api.QueryTrpcApiGet[api.StationsRequest, api.StationsResponse](
 		a.config.BaseUrl+a.config.StationsRoute,
-		api.StationRequest{},
+		api.StationsRequest{},
 	)
+}
+
+func (a *App) GetSelectedStation() (api.Station, error) {
+	return api.QueryTrpcApiGet[api.StationRequest, api.Station](
+		a.config.BaseUrl+a.config.StationByIdRoute,
+		api.StationRequest{StationId: a.data.stationId.ReadValue()},
+	)
+}
+
+func (a *App) SetSelectedStation(stationId string) {
+	a.data.stationId.UpdateValue(stationId)
+}
+
+func (a *App) GetCurrentStationPage() int8 {
+	return a.data.stationPage.ReadValue()
+}
+
+func (a *App) SetCurrentStationPage(page int8) {
+	a.data.stationPage.UpdateValue(page)
 }
 
 type TrainsDataRetriever struct {
