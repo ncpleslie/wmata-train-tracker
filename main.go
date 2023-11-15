@@ -31,7 +31,9 @@ func main() {
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		Frameless:        false,
+		Frameless:        true,
+		CSSDragProperty:  "--wails-draggable",
+		CSSDragValue:     "drag",
 		BackgroundColour: &options.RGBA{R: 0, G: 0, B: 0, A: 0},
 		OnStartup:        application.Startup,
 		OnDomReady:       application.OnReady,

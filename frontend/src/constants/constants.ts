@@ -1,4 +1,5 @@
 export const RuntimeEvent = {
+  started: "started",
   trains: "trains",
   incidents: "incidents",
 } as const;

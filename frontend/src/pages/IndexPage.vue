@@ -7,7 +7,6 @@ import {
 } from "@wmata-train-tracker/shared";
 import HomeView from "@/components/HomeView.vue";
 import ErrorPopup from "@/components/ErrorPopup.vue";
-import BootView from "@/components/BootView.vue";
 import { useQuery } from "@/composables/query";
 import { Route, RuntimeEvent, RuntimeErrorEvent } from "@/constants/constants";
 import { useTypedRouter } from "@/composables/typed-router";
@@ -72,9 +71,7 @@ watch(trainsResponse, () => {
 </script>
 
 <template>
-  <BootView v-if="!data" />
   <HomeView
-    v-else
     :train-data="data"
     :selected-station-name="selectedStation?.name"
     :has-incidents="hasIncidents"

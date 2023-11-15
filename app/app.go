@@ -8,6 +8,7 @@ import (
 	api "github.com/ncpleslie/wmata-train-tracker/app/services"
 	types "github.com/ncpleslie/wmata-train-tracker/app/types"
 	utils "github.com/ncpleslie/wmata-train-tracker/app/utils"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
 // App struct
@@ -61,6 +62,7 @@ func (a *App) OnReady(ctx context.Context) {
 		stationId: a.data.stationId,
 	}
 	go utils.RunIntervalEvent(ctx, incidentsRetriever, incidentsRetriever.config)
+	runtime.EventsEmit(ctx, constants.Started)
 }
 
 func (a *App) GetTrains() (api.TrainsResponse, error) {
