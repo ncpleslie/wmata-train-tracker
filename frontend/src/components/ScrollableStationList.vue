@@ -3,7 +3,7 @@ import { useResizeObserver } from "@vueuse/core";
 import { Icon } from "@iconify/vue";
 import { StationEntity } from "@wmata-train-tracker/shared";
 import { AppConstants } from "@wmata-train-tracker/shared";
-import BaseButton from "@/components/BaseButton.vue";
+import BaseButton from "./BaseButton.vue";
 
 interface ScrollableStationListProps {
   stations: StationEntity[];

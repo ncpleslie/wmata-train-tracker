@@ -3,13 +3,13 @@ import {
   TrainsResponseEntity,
   AppConstants,
 } from "@wmata-train-tracker/shared";
-import MinSizeWarning from "@/components/MinSizeWarning.vue";
-import AreaAction from "@/components/AreaAction.vue";
-import SublineText from "@/components/SublineText.vue";
-import TrainArrivalBoard from "@/components/TrainArrivalBoard.vue";
-import IncidentNotification from "@/components/IncidentNotification.vue";
-import LastUpdated from "@/components/LastUpdated.vue";
-import LoadingIndicator from "@/components/LoadingIndicator.vue";
+import MinSizeWarning from "./MinSizeWarning.vue";
+import AreaAction from "./AreaAction.vue";
+import SublineText from "./SublineText.vue";
+import TrainArrivalBoard from "./TrainArrivalBoard.vue";
+import IncidentNotification from "./IncidentNotification.vue";
+import LastUpdated from "./LastUpdated.vue";
+import LoadingIndicator from "./LoadingIndicator.vue";
 
 interface HomeViewProps {
   trainData?: TrainsResponseEntity;
@@ -53,7 +53,7 @@ const emit = defineEmits<{
           />
         </div>
       </div>
-      <LoadingIndicator v-if="isRefreshing" />
+      <LoadingIndicator :show="isRefreshing" />
     </AreaAction>
   </MinSizeWarning>
 </template>

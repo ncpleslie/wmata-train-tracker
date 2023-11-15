@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import SublineText from "@/components/SublineText.vue";
+import SublineText from "./SublineText.vue";
 
 interface LastUpdatedProps {
   lastUpdated: Date;

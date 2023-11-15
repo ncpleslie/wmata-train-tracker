@@ -14,6 +14,7 @@ import {
 } from "@wails/go/app/App";
 import { useTypedRouter } from "@/composables/typed-router";
 import { Route } from "@/constants/constants";
+import ErrorPopup from "@/components/ErrorPopup.vue";
 
 const router = useTypedRouter();
 

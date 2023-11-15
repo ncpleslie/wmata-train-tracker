@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useTrainStore } from "~/stores/train.store";
+import { IncidentsView } from "@wmata-train-tracker/frontend";
 
 const trainStore = useTrainStore();
 const { incidents } = toRefs(trainStore);

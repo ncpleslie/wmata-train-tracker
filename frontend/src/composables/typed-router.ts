@@ -22,6 +22,10 @@ type RouteValues = (typeof Route)[RouteKeys];
 export const useTypedRouter = () => {
   const router = useRouter();
 
+  /**
+   * A extension of the standard `vue-router` `push` method that only accepts valid routes.
+   * @param route
+   */
   const pushPath = (route: RouteValues) => {
     router.push(route);
   };

@@ -2,6 +2,7 @@
 import { StationEntity } from "@wmata-train-tracker/shared";
 import { useGetStations } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
+import { ScrollableStationList } from "@wmata-train-tracker/frontend";
 
 const stationStore = useTrainStore();
 const { selectedStation, currentPage } = toRefs(stationStore);

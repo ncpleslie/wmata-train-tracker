@@ -7,7 +7,7 @@ import { IncidentEntity, StationEntity } from "@wmata-train-tracker/shared";
 export const useTrainStore = defineStore(
   "train",
   () => {
-    const selectedStation = ref<StationEntity | null>(null);
+    const selectedStation = ref<StationEntity>();
     const currentPage = ref(0);
     const incidents = ref<IncidentEntity[]>([]);
 

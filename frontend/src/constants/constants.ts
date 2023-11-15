@@ -3,6 +3,11 @@ export const RuntimeEvent = {
   incidents: "incidents",
 } as const;
 
+export const RuntimeErrorEvent = {
+  trains: "trains_error",
+  incidents: "incidents_error",
+} as const;
+
 export const Route = {
   Index: "/",
   Stations: "/stations",

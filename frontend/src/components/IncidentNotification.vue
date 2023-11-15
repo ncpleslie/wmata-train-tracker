@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Icon } from "@iconify/vue";
-import BaseButton from "@/components/BaseButton.vue";
+import BaseButton from "./BaseButton.vue";
 
 const emit = defineEmits<{ (e: "onSeeIncidents"): void }>();
 
