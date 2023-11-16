@@ -14,7 +14,6 @@ type IntervalEvent interface {
 type DataRetrieverConfig struct {
 	EventName            string
 	PollingRateInSeconds int
-	Url                  string
 }
 
 func RunIntervalEvent(ctx context.Context, retrieveData IntervalEvent, config DataRetrieverConfig) {

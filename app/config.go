@@ -16,6 +16,7 @@ type Config struct {
 	IncidentRoute           string `env:"INCIDENT_ROUTE,required"`
 	StationByIdRoute        string `env:"STATION_BY_ID_ROUTE,required"`
 	StationsRoute           string `env:"STATIONS_ROUTE,required"`
+	SQLiteURL               string `env:"SQLITE_URL,required"`
 }
 
 // Generates a Config based on the values found in a .env file found in the root directory.

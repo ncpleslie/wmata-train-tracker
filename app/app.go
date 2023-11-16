@@ -2,20 +2,27 @@ package app
 
 import (
 	"context"
+
 	"time"
 
 	constants "github.com/ncpleslie/wmata-train-tracker/app/constants"
-	api "github.com/ncpleslie/wmata-train-tracker/app/services"
+	trainDB "github.com/ncpleslie/wmata-train-tracker/app/db"
+
+	train "github.com/ncpleslie/wmata-train-tracker/app/services"
+
+	// api "github.com/ncpleslie/wmata-train-tracker/app/services"
 	types "github.com/ncpleslie/wmata-train-tracker/app/types"
 	utils "github.com/ncpleslie/wmata-train-tracker/app/utils"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
+	_ "modernc.org/sqlite"
 )
 
 // App struct
 type App struct {
-	ctx    context.Context
-	config Config
-	data   Data
+	ctx          context.Context
+	config       Config
+	data         Data
+	trainService *train.Service
 }
 
 // A collection of values used throughout the application
@@ -33,10 +40,27 @@ func NewApp() *App {
 func (a *App) Startup(ctx context.Context) {
 	a.ctx = ctx
 	a.config = generateConfig()
-	a.data = Data{
-		stationId:   types.NewSafeStruct(a.config.DefaultStationId),
-		stationPage: types.NewSafeStruct(int8(0)),
+
+	trainDb, err := trainDB.Initialize(ctx, a.config.SQLiteURL)
+	if err != nil {
+		panic(err)
 	}
+
+	trainServiceConfig := train.Config{
+		TrainsUrl:      a.config.BaseUrl + a.config.TrainRoute,
+		IncidentsUrl:   a.config.BaseUrl + a.config.IncidentRoute,
+		StationsUrl:    a.config.BaseUrl + a.config.StationsRoute,
+		StationByIdUrl: a.config.BaseUrl + a.config.StationByIdRoute,
+	}
+
+	a.trainService = train.InitializeService(trainDb, trainServiceConfig)
+
+	// resp, err := a.trainDB.SetStationId(a.ctx, a.config.DefaultStationId)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	// fmt.Println(resp)
 }
 
 func (a *App) OnReady(ctx context.Context) {
@@ -47,9 +71,8 @@ func (a *App) OnReady(ctx context.Context) {
 		config: utils.DataRetrieverConfig{
 			EventName:            constants.Trains,
 			PollingRateInSeconds: a.config.TrainUpdateInSeconds,
-			Url:                  a.config.BaseUrl + a.config.TrainRoute,
 		},
-		stationId: a.data.stationId,
+		trainService: a.trainService,
 	}
 	go utils.RunIntervalEvent(ctx, trainsRetriever, trainsRetriever.config)
 
@@ -57,40 +80,28 @@ func (a *App) OnReady(ctx context.Context) {
 		config: utils.DataRetrieverConfig{
 			EventName:            constants.Incidents,
 			PollingRateInSeconds: a.config.IncidentUpdateInSeconds,
-			Url:                  a.config.BaseUrl + a.config.IncidentRoute,
 		},
-		stationId: a.data.stationId,
+		trainService: a.trainService,
 	}
 	go utils.RunIntervalEvent(ctx, incidentsRetriever, incidentsRetriever.config)
 	runtime.EventsEmit(ctx, constants.Started)
 }
 
-func (a *App) GetTrains() (api.TrainsResponse, error) {
-	return api.QueryTrpcApiGet[api.TrainRequest, api.TrainsResponse](
-		a.config.BaseUrl+a.config.TrainRoute,
-		api.TrainRequest{StationId: a.data.stationId.ReadValue()},
-	)
+func (a *App) GetTrains() (train.TrainsResponse, error) {
+	return a.trainService.GetTrains()
 }
 
-func (a *App) GetIncidents() (api.IncidentsResponse, error) {
-	return api.QueryTrpcApiGet[api.IncidentRequest, api.IncidentsResponse](
-		a.config.BaseUrl+a.config.IncidentRoute,
-		api.IncidentRequest{StationId: a.data.stationId.ReadValue()},
-	)
+func (a *App) GetIncidents() (train.IncidentsResponse, error) {
+	return a.trainService.GetIncidents()
 }
 
-func (a *App) GetStations() (api.StationsResponse, error) {
-	return api.QueryTrpcApiGet[api.StationsRequest, api.StationsResponse](
-		a.config.BaseUrl+a.config.StationsRoute,
-		api.StationsRequest{},
-	)
+func (a *App) GetStations() (train.StationsResponse, error) {
+	return a.trainService.GetStations()
+
 }
 
-func (a *App) GetSelectedStation() (api.Station, error) {
-	return api.QueryTrpcApiGet[api.StationRequest, api.Station](
-		a.config.BaseUrl+a.config.StationByIdRoute,
-		api.StationRequest{StationId: a.data.stationId.ReadValue()},
-	)
+func (a *App) GetSelectedStation() (train.Station, error) {
+	return a.trainService.GetSelectedStation()
 }
 
 func (a *App) SetSelectedStation(stationId string) {
@@ -106,25 +117,19 @@ func (a *App) SetCurrentStationPage(page int8) {
 }
 
 type TrainsDataRetriever struct {
-	config    utils.DataRetrieverConfig
-	stationId *types.SafeStruct[string]
+	config       utils.DataRetrieverConfig
+	trainService *train.Service
 }
 
 func (t *TrainsDataRetriever) Run() (interface{}, error) {
-	return api.QueryTrpcApiGet[api.TrainRequest, api.TrainsResponse](
-		t.config.Url,
-		api.TrainRequest{StationId: t.stationId.ReadValue()},
-	)
+	return t.trainService.GetTrains()
 }
 
 type IncidentsDataRetriever struct {
-	config    utils.DataRetrieverConfig
-	stationId *types.SafeStruct[string]
+	config       utils.DataRetrieverConfig
+	trainService *train.Service
 }
 
 func (t *IncidentsDataRetriever) Run() (interface{}, error) {
-	return api.QueryTrpcApiGet[api.IncidentRequest, api.IncidentsResponse](
-		t.config.Url,
-		api.IncidentRequest{StationId: t.stationId.ReadValue()},
-	)
+	return t.trainService.GetIncidents()
 }

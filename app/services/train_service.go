@@ -3,13 +3,11 @@ package train
 import (
 	"bytes"
 	"encoding/json"
-	"net/http"
 	"time"
-)
 
-// type TRPCMetaRequest[T any] struct {
-// 	Values T `json:"values"`
-// }
+	db "github.com/ncpleslie/wmata-train-tracker/app/db"
+	api "github.com/ncpleslie/wmata-train-tracker/app/utils"
+)
 
 // Custom time that could be returned from the WMATA API
 // E.g. Time may be in the format of "2023-10-09T06:40:46"
@@ -34,23 +32,6 @@ func (m *WmataTime) UnmarshalJSON(data []byte) error {
 	data = append(data[:index], append(timezoneIdentifier, data[index:]...)...)
 
 	return json.Unmarshal(data, (*time.Time)(m))
-}
-
-type TRPCRequest[T any] struct {
-	Json T `json:"json"`
-	// Meta TRPCMetaRequest[T] `json:"meta"`
-}
-
-type TRPCResponse[T any] struct {
-	Result TRPCResponseData[T] `json:"result"`
-}
-
-type TRPCResponseData[T any] struct {
-	Data TRPCResponseDataJson[T] `json:"data"`
-}
-
-type TRPCResponseDataJson[T any] struct {
-	Json T `json:"json"`
 }
 
 type TrainRequest struct {
@@ -125,35 +106,52 @@ type StationAddress struct {
 	Zip    string `json:"zip"`
 }
 
-func createHTTPClient() *http.Client {
-	tr := &http.Transport{
-		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
-		DisableCompression: true,
-	}
-	return &http.Client{Transport: tr}
+type Config struct {
+	TrainsUrl      string
+	IncidentsUrl   string
+	StationsUrl    string
+	StationByIdUrl string
 }
 
-func QueryTrpcApiGet[T any, U any](url string, requestPayload T) (U, error) {
-	client := createHTTPClient()
+type Service struct {
+	config Config
+	repo   *db.Queries
+}
 
-	requestJSON, err := json.Marshal(&TRPCRequest[T]{Json: requestPayload})
-	if err != nil {
-		return *new(U), err
+func InitializeService(repo *db.Queries, config Config) *Service {
+	return &Service{
+		repo:   repo,
+		config: config,
 	}
+}
 
-	url += "?input=" + string(requestJSON)
+func (t *Service) GetTrains() (TrainsResponse, error) {
+	stationId := "B03" // REPLACE
+	return api.QueryTrpcApiGet[TrainRequest, TrainsResponse](
+		t.config.TrainsUrl,
+		TrainRequest{StationId: stationId},
+	)
+}
 
-	response, err := client.Get(url)
-	if err != nil {
-		return *new(U), err
-	}
-	defer response.Body.Close()
+func (t *Service) GetIncidents() (IncidentsResponse, error) {
+	stationId := "B03" // REPLACE
+	return api.QueryTrpcApiGet[IncidentRequest, IncidentsResponse](
+		t.config.IncidentsUrl,
+		IncidentRequest{StationId: stationId},
+	)
+}
 
-	var responseBody TRPCResponse[U]
-	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {
-		return *new(U), err
-	}
+func (t *Service) GetStations() (StationsResponse, error) {
+	return api.QueryTrpcApiGet[StationsRequest, StationsResponse](
+		t.config.StationsUrl,
+		StationsRequest{},
+	)
+}
 
-	return responseBody.Result.Data.Json, nil
+func (t *Service) GetSelectedStation() (Station, error) {
+	stationId := "B03" // REPLACE
+	return api.QueryTrpcApiGet[StationRequest, Station](
+		t.config.StationByIdUrl,
+		StationRequest{StationId: stationId},
+	)
 }
