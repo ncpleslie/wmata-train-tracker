@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"time"
 
-	db "github.com/ncpleslie/wmata-train-tracker/app/db"
 	api "github.com/ncpleslie/wmata-train-tracker/app/utils"
 )
 
@@ -113,34 +112,79 @@ type Config struct {
 	StationByIdUrl string
 }
 
+// Service represents a service for interacting with a tRPC-like API to fetch train-related data.
+// It encapsulates the configuration and provides methods to retrieve information about trains, incidents, and stations.
+//
+// Fields:
+//   - config: Configuration settings for the service.
 type Service struct {
 	config Config
-	repo   *db.Queries
 }
 
-func InitializeService(repo *db.Queries, config Config) *Service {
+// InitializeService initializes and returns a *Service instance with the provided configuration settings.
+// It takes a Config as a parameter.
+//
+// Parameters:
+//   - config: Configuration settings for the service.
+//
+// Returns:
+//   - *Service: A pointer to the initialized *Service instance.
+func InitializeService(config Config) *Service {
 	return &Service{
-		repo:   repo,
 		config: config,
 	}
 }
 
-func (t *Service) GetTrains() (TrainsResponse, error) {
-	stationId := "B03" // REPLACE
+// GetTrainsByStationId retrieves information about trains based on the specified station ID.
+// It sends a tRPC-like API query and returns a TrainsResponse and an error.
+//
+// Parameters:
+//   - stationId: The ID of the station for which train information is requested.
+//
+// Returns:
+//   - TrainsResponse: The response containing information about trains.
+//   - error:          An error, if any, during the API query.
+//
+// Example:
+//
+//	trains, err := service.GetTrainsByStationId("B03")
+func (t *Service) GetTrainsByStationId(stationId string) (TrainsResponse, error) {
 	return api.QueryTrpcApiGet[TrainRequest, TrainsResponse](
 		t.config.TrainsUrl,
 		TrainRequest{StationId: stationId},
 	)
 }
 
-func (t *Service) GetIncidents() (IncidentsResponse, error) {
-	stationId := "B03" // REPLACE
+// GetIncidentsByStationId retrieves information about incidents based on the specified station ID.
+// It sends a tRPC-like API query and returns an IncidentsResponse and an error.
+//
+// Parameters:
+//   - stationId: The ID of the station for which incident information is requested.
+//
+// Returns:
+//   - IncidentsResponse: The response containing information about incidents.
+//   - error:            An error, if any, during the API query.
+//
+// Example:
+//
+//	incidents, err := service.GetIncidentsByStationId("B03)
+func (t *Service) GetIncidentsByStationId(stationId string) (IncidentsResponse, error) {
 	return api.QueryTrpcApiGet[IncidentRequest, IncidentsResponse](
 		t.config.IncidentsUrl,
 		IncidentRequest{StationId: stationId},
 	)
 }
 
+// GetStations retrieves a list of all available train stations.
+// It sends a tRPC-like API query and returns a StationsResponse and an error.
+//
+// Returns:
+//   - StationsResponse: The response containing information about all stations.
+//   - error:            An error, if any, during the API query.
+//
+// Example:
+//
+//	stations, err := service.GetStations()
 func (t *Service) GetStations() (StationsResponse, error) {
 	return api.QueryTrpcApiGet[StationsRequest, StationsResponse](
 		t.config.StationsUrl,
@@ -148,8 +192,20 @@ func (t *Service) GetStations() (StationsResponse, error) {
 	)
 }
 
-func (t *Service) GetSelectedStation() (Station, error) {
-	stationId := "B03" // REPLACE
+// GetSelectedStationById retrieves information about a specific station based on its ID.
+// It sends a tRPC-like API query and returns a Station and an error.
+//
+// Parameters:
+//   - stationId: The ID of the station for which information is requested.
+//
+// Returns:
+//   - Station: The response containing information about the specified station.
+//   - error:   An error, if any, during the API query.
+//
+// Example:
+//
+//	selectedStation, err := service.GetSelectedStationById("B03")
+func (t *Service) GetSelectedStationById(stationId string) (Station, error) {
 	return api.QueryTrpcApiGet[StationRequest, Station](
 		t.config.StationByIdUrl,
 		StationRequest{StationId: stationId},

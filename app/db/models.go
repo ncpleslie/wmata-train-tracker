@@ -6,12 +6,9 @@ package train_db
 
 import ()
 
-type UserActivity struct {
-	ID          int64
-	StationPage int64
-}
-
 type UserPreference struct {
-	ID        int64
-	StationID string
+	ID                   int64
+	StationID            string
+	StationPage          int64
+	UniqueConstantColumn int64
 }

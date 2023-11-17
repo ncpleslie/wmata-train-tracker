@@ -7,6 +7,18 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Config represents the configuration settings for the application, loaded from environment variables.
+//
+// Fields:
+//   - BaseUrl:                 The base URL for API endpoints.
+//   - DefaultStationId:        The default station ID for the application.
+//   - TrainUpdateInSeconds:    The polling rate in seconds for updating train data.
+//   - TrainRoute:              The route for fetching train data.
+//   - IncidentUpdateInSeconds: The polling rate in seconds for updating incident data.
+//   - IncidentRoute:           The route for fetching incident data.
+//   - StationByIdRoute:        The route for fetching station data by ID.
+//   - StationsRoute:           The route for fetching all stations data.
+//   - SQLiteURL:               The URL for the SQLite database.
 type Config struct {
 	BaseUrl                 string `env:"BASE_URL,required"`
 	DefaultStationId        string `env:"DEFAULT_STATION_ID,required"`
@@ -19,7 +31,12 @@ type Config struct {
 	SQLiteURL               string `env:"SQLITE_URL,required"`
 }
 
-// Generates a Config based on the values found in a .env file found in the root directory.
+// generateConfig loads configuration settings from environment variables using the godotenv and env packages.
+//
+// Returns:
+//   - Config: The configuration settings for the application.
+//
+// Note: The function panics if there is an error loading the .env file or parsing environment variables.
 func generateConfig() Config {
 	err := godotenv.Load()
 	if err != nil {

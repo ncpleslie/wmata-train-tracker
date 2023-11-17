@@ -9,18 +9,56 @@ import (
 	"context"
 )
 
-const setStationId = `-- name: SetStationId :one
+const getStationId = `-- name: GetStationId :one
+SELECT station_id FROM user_preferences WHERE unique_constant_column = 1
+`
+
+func (q *Queries) GetStationId(ctx context.Context) (string, error) {
+	row := q.db.QueryRowContext(ctx, getStationId)
+	var station_id string
+	err := row.Scan(&station_id)
+	return station_id, err
+}
+
+const getStationPage = `-- name: GetStationPage :one
+SELECT station_page FROM user_preferences WHERE unique_constant_column = 1
+`
+
+func (q *Queries) GetStationPage(ctx context.Context) (int64, error) {
+	row := q.db.QueryRowContext(ctx, getStationPage)
+	var station_page int64
+	err := row.Scan(&station_page)
+	return station_page, err
+}
+
+const setDefaultStationId = `-- name: SetDefaultStationId :exec
 INSERT INTO user_preferences (
   station_id
 ) VALUES (
   ?
 )
-RETURNING station_id
+ON CONFLICT DO NOTHING
 `
 
-func (q *Queries) SetStationId(ctx context.Context, stationID string) (string, error) {
-	row := q.db.QueryRowContext(ctx, setStationId, stationID)
-	var station_id string
-	err := row.Scan(&station_id)
-	return station_id, err
+func (q *Queries) SetDefaultStationId(ctx context.Context, stationID string) error {
+	_, err := q.db.ExecContext(ctx, setDefaultStationId, stationID)
+	return err
+}
+
+const updateStationId = `-- name: UpdateStationId :exec
+UPDATE user_preferences SET station_id = ? WHERE unique_constant_column = 1
+`
+
+func (q *Queries) UpdateStationId(ctx context.Context, stationID string) error {
+	_, err := q.db.ExecContext(ctx, updateStationId, stationID)
+	return err
+}
+
+const updateStationPage = `-- name: UpdateStationPage :exec
+UPDATE user_preferences SET station_page = ? WHERE unique_constant_column = 1
+`
+
+func (q *Queries) UpdateStationPage(ctx context.Context, stationPage int64) error {
+	_, err := q.db.ExecContext(ctx, updateStationPage, stationPage)
+	return err
 }

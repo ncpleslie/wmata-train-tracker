@@ -9,16 +9,26 @@ import (
 //go:embed schema.sql
 var ddl string
 
-func Initialize(ctx context.Context, DBUrl string) (*Queries, error) {
+// Initialize initializes an SQLite database connection and returns a *Queries instance for interaction.
+// It takes a context.Context and a DBUrl (SQLite database URL) as parameters.
+//
+// Parameters:
+//   - ctx:   The context.Context for managing the database initialization.
+//   - DBUrl: The URL specifying the SQLite database.
+//
+// Returns:
+//   - *sql.DB:      A pointer to the *sql.DB instance representing the SQLite database connection.
+//   - *Queries:     A pointer to the *Queries instance for interacting with the initialized database.
+//   - error:        An error, if any, during the database initialization.
+func Initialize(ctx context.Context, DBUrl string) (*sql.DB, *Queries, error) {
 	db, err := sql.Open("sqlite", DBUrl)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	defer db.Close()
 
 	if _, err := db.ExecContext(ctx, ddl); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	return New(db), nil
+	return db, New(db), nil
 }
