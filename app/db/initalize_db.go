@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	_ "embed"
+
+	_ "modernc.org/sqlite"
 )
 
 //go:embed schema.sql
@@ -20,7 +22,7 @@ var ddl string
 //   - *sql.DB:      A pointer to the *sql.DB instance representing the SQLite database connection.
 //   - *Queries:     A pointer to the *Queries instance for interacting with the initialized database.
 //   - error:        An error, if any, during the database initialization.
-func Initialize(ctx context.Context, DBUrl string) (*sql.DB, *Queries, error) {
+func Initialize(ctx context.Context, DBUrl string) (*sql.DB, Querier, error) {
 	db, err := sql.Open("sqlite", DBUrl)
 	if err != nil {
 		return nil, nil, err
@@ -30,5 +32,5 @@ func Initialize(ctx context.Context, DBUrl string) (*sql.DB, *Queries, error) {
 		return nil, nil, err
 	}
 
-	return db, New(db), nil
+	return db, Querier(New(db)), nil
 }

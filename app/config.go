@@ -31,16 +31,16 @@ type Config struct {
 	SQLiteURL               string `env:"SQLITE_URL,required"`
 }
 
-// generateConfig loads configuration settings from environment variables using the godotenv and env packages.
+// generateConfig loads configuration settings from configuration variables using the godotenv and env packages.
 //
 // Returns:
 //   - Config: The configuration settings for the application.
 //
-// Note: The function panics if there is an error loading the .env file or parsing environment variables.
+// Note: The function panics if there is an error loading the .cfg file.
 func generateConfig() Config {
-	err := godotenv.Load()
+	err := godotenv.Load("config.cfg")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Fatal("Error loading config file")
 		panic(err)
 	}
 
@@ -48,7 +48,7 @@ func generateConfig() Config {
 
 	err = env.Parse(&cfg)
 	if err != nil {
-		log.Fatalf("Unable to parse environment variables: %e", err)
+		log.Fatalf("Unable to parse config variables: %e", err)
 		panic(err)
 	}
 

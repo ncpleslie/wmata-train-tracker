@@ -60,7 +60,7 @@ func createHTTPClient() *http.Client {
 // and returns the parsed response data.
 //
 // Parameters:
-//   - url:             The URL for the tRPC-like API.
+//   - url:            The URL for the tRPC-like API.
 //   - requestPayload: The request payload for the API query.
 //
 // Returns:
@@ -70,7 +70,7 @@ func createHTTPClient() *http.Client {
 // Example:
 //
 //	var requestPayload YourRequestType
-//	response, err := QueryTrpcApiGet<YourRequestType, YourResponseType>("https://api.example.com/api/trpc/example.getData", requestPayload)
+//	response, err := QueryTrpcApiGet[YourRequestType, YourResponseType]("https://api.example.com/api/trpc/example.getData", requestPayload)
 func QueryTrpcApiGet[T any, U any](url string, requestPayload T) (U, error) {
 	client := createHTTPClient()
 

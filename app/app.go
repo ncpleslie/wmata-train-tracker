@@ -23,7 +23,7 @@ type App struct {
 	ctx          context.Context
 	config       Config
 	trainService *train.Service
-	preferences  *db.Queries
+	preferences  db.Querier
 }
 
 // NewApp creates a new App application struct
@@ -35,20 +35,31 @@ func NewApp() *App {
 // Startup is called by Wails.
 // The function sets up the application's configuration, database connection,
 // and initializes various services required for the application to run.
-
+//
 // Parameters:
 //   - ctx: The context.Context for managing the application's context.
 //   - a:   A pointer to the App struct representing the application.
 func (a *App) Startup(ctx context.Context) {
-	a.ctx = ctx
-	a.config = generateConfig()
-
-	_, preferences, err := db.Initialize(ctx, a.config.SQLiteURL)
+	config := generateConfig()
+	_, preferencesDB, err := db.Initialize(ctx, config.SQLiteURL)
 	if err != nil {
 		panic(err)
 	}
-	a.preferences = preferences
-	err = a.preferences.SetDefaultStationId(ctx, a.config.DefaultStationId)
+	a.InitializeApplicationServices(ctx, config, preferencesDB)
+}
+
+// Initalizes the application's services.
+//
+// Parameters:
+//   - ctx: The context.Context for managing the application's context.
+//   - config: The config with default information for the application such as URLs, polling rates, etc.
+//   - preferencesQueries; The queries for querying the preferences DB.
+func (a *App) InitializeApplicationServices(ctx context.Context, config Config, preferencesQueries db.Querier) {
+	a.ctx = ctx
+	a.config = config
+	a.preferences = preferencesQueries
+	// We can ignore an error when setting the default as the user will have the option to set it later on.
+	_ = a.preferences.SetDefaultStationId(ctx, a.config.DefaultStationId)
 
 	trainServiceConfig := train.Config{
 		TrainsUrl:      a.config.BaseUrl + a.config.TrainRoute,
@@ -143,14 +154,13 @@ func (a *App) SetCurrentStationPage(page int64) error {
 // The function performs the following steps:
 //  1. Creates a TrainsDataRetriever instance to retrieve and update train data
 //     based on the specified polling rate and starts it as a goroutine.
+//     Train data is emitted as an event.
 //  2. Creates an IncidentsDataRetriever instance to retrieve and update incident data
 //     based on the specified polling rate and starts it as a goroutine.
+//     Incident data is emitted as an event.
 //
 // Parameters:
 //   - ctx: The context.Context for managing the application's context.
-//
-// Note: The background tasks run independently in goroutines and periodically fetch
-// updated train and incident data based on the configured polling rates.
 func (a *App) startBackgroundTasks(ctx context.Context) {
 	trainsRetriever := &TrainsDataRetriever{
 		config: utils.DataRetrieverConfig{
@@ -197,7 +207,7 @@ type TrainsDataRetriever struct {
 	config       utils.DataRetrieverConfig
 	ctx          context.Context
 	trainService *train.Service
-	preferences  *db.Queries
+	preferences  db.Querier
 }
 
 // Implements the Run method of the utils.DataRetriever interface.
@@ -235,7 +245,7 @@ type IncidentsDataRetriever struct {
 	config       utils.DataRetrieverConfig
 	ctx          context.Context
 	trainService *train.Service
-	preferences  *db.Queries
+	preferences  db.Querier
 }
 
 // Implements the Run method of the utils.DataRetriever interface.
