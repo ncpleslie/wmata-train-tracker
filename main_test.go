@@ -8,7 +8,6 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// MockDB is a mock implementation of the db.Queries interface
 type MockQueries struct {
 	mock.Mock
 }
