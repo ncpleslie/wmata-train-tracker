@@ -2,3 +2,4 @@ node_modules
 .env
 config.cfg
 db.sql
+build/bin/

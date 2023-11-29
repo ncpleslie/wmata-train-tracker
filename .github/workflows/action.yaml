@@ -1,4 +1,4 @@
-name: golangci-lint
+name: Build and Release WMATA Train Tracker
 on:
   push:
     # branches:
@@ -11,44 +11,80 @@ permissions:
   # pull-requests: read
 
 jobs:
-  # golangci:
-  #   name: Lint Wails Go Application
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-go@v4
-  #       with:
-  #         go-version: "1.21"
-  #         cache: false
-  #     - name: golangci-lint
-  #       uses: golangci/golangci-lint-action@v3
-  #       with:
-  #         # Require: The version of golangci-lint to use.
-  #         # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
-  #         # When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash of a commit.
-  #         version: v1.54
-  # test:
-  #   name: Test Wails Go Application
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-go@v4
-  #       with:
-  #         go-version: "1.21"
-  #         cache: false
-  #     - name: Install dependencies
-  #       run: go get .
-  #     - name: Run tests
-  #       run: go test ./...
+  lint-go:
+    name: Lint - Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          # Require: The version of golangci-lint to use.
+          # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
+          # When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash of a commit.
+          version: v1.54
+
+  test-go:
+    name: Test - Go
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          pnpm install
+          pnpm build
+      - uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+          cache: false
+      - name: Install dependencies
+        run: go get .
+      - name: Run tests
+        run: go test ./...
 
   build:
+    name: Build - Wails
+    needs: [lint-go, test-go]
     strategy:
       fail-fast: false
       matrix:
         build: [
-            { name: wailsTest, platform: linux/amd64, os: ubuntu-latest },
-            # { name: wailsTest, platform: windows/amd64, os: windows-latest },
-            # { name: wailsTest, platform: darwin/universal, os: macos-latest },
+            {
+              name: wmata-train-tracker,
+              platform: linux/amd64,
+              os: ubuntu-latest,
+            },
+            # { name: wmata-train-tracker, platform: windows/amd64, os: windows-latest },
+            # { name: wmata-train-tracker, platform: darwin/universal, os: macos-latest },
           ]
     runs-on: ${{ matrix.build.os }}
     steps:

@@ -1,0 +1,4 @@
+issues:
+  exclude:
+    - "invalid go:embed: build system did not supply embed configuration"
+    - "invalid go:embed: build system did not supply embed configuration (typecheck)"
