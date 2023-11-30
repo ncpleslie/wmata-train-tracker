@@ -3,3 +3,4 @@ node_modules
 config.cfg
 db.sql
 build/bin/
+tmp/

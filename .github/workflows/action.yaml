@@ -123,4 +123,30 @@ jobs:
           build-platform: ${{ matrix.build.platform }}
           go-version: "1.21"
           node-version: 18
-          package: ${{ !env.ACT }}
+          package: false
+
+      - name: Create Config File
+        run: |
+          echo "BASE_URL=${{ vars.BASE_URL }}" > build/bin/config.cfg
+          echo "TRAIN_UPDATE_IN_SECONDS=${{ vars.TRAIN_UPDATE_IN_SECONDS }}" >> build/bin/config.cfg
+          echo "TRAIN_ROUTE=${{ vars.TRAIN_ROUTE }}" >> build/bin/config.cfg
+          echo "INCIDENT_UPDATE_IN_SECONDS=${{ vars.INCIDENT_UPDATE_IN_SECONDS }}" >> build/bin/config.cfg
+          echo "INCIDENT_ROUTE=${{ vars.INCIDENT_ROUTE }}" >> build/bin/config.cfg
+          echo "STATIONS_ROUTE=${{ vars.STATIONS_ROUTE }}" >> build/bin/config.cfg
+          echo "STATION_BY_ID_ROUTE=${{ vars.STATION_BY_ID_ROUTE }}" >> build/bin/config.cfg
+          echo "DEFAULT_STATION_ID=${{ vars.DEFAULT_STATION_ID }}" >> build/bin/config.cfg
+          echo "SQLITE_URL=${{ vars.SQLITE_URL }}" >> build/bin/config.cfg
+
+      - name: Make executable
+        if: runner.os == 'Linux'
+        run: chmod +x build/bin/*
+
+      - name: Tar files
+        if: runner.os == 'Linux'
+        run: tar -cvf wmata-train-tracker.tar -C build/bin .
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: Wails Build ${{runner.os}} ${{matrix.build.name}}
+          path: wmata-train-tracker.tar
