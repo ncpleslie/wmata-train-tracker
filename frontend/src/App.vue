@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Close } from "@wails/go/app/App";
 import { useRuntime } from "@/composables/runtime";
 import { RuntimeEvent } from "@/constants/constants";
 import BootView from "@/components/BootView.vue";
@@ -9,6 +10,20 @@ const { eventOn } = useRuntime();
 const started = ref(false);
 
 eventOn(RuntimeEvent.started, () => (started.value = true));
+
+const onClose = (e: KeyboardEvent) => {
+  if (e.key === "q") {
+    Close();
+  }
+};
+
+onMounted(() => {
+  document.addEventListener("keyup", onClose);
+});
+
+onUnmounted(() => {
+  document.removeEventListener("keyup", onClose);
+});
 </script>
 
 <template>

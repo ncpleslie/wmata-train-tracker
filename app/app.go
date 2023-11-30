@@ -147,6 +147,11 @@ func (a *App) SetCurrentStationPage(page int64) error {
 	return a.preferences.UpdateStationPage(a.ctx, page)
 }
 
+// Closes the application
+func (a *App) Close() {
+	runtime.Quit(a.ctx)
+}
+
 // startBackgroundTasks initiates and runs background tasks for periodically retrieving
 // and updating train and incident data. It takes a context.Context as a parameter
 // to manage the application's context.

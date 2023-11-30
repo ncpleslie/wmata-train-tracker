@@ -5,6 +5,8 @@ import {context} from '../models';
 import {app} from '../models';
 import {train_db} from '../models';
 
+export function Close():Promise<void>;
+
 export function GetCurrentStationPage():Promise<number>;
 
 export function GetIncidents():Promise<train.IncidentsResponse>;
