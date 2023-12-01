@@ -1,26 +1,10 @@
-# DC Train Tracker
+# WMATA Train Tracker - Nuxt 3
 
-![](./public/android-chrome-192x192.png)
+This is the Nuxt 3 application for the WMATA Train Tracker application. It provides an in-browser UI to see train and incident information for the Washington, DC Metro.
 
-WMATA train tracking application for monitoring train arrival times at your station of choice. Built to run on the Raspberry Pi Zero 2 W
+This Nuxt 3 application also provides an API that is used by the Wails/Go application.
 
-Check it out at https://wmata-train-tracking.vercel.app/.
-
-Tap/Click the left side of the screen to set your station.
-Tap/Click the right side to see incidents, if there are any.
-
-## About
-
-This application is built to run on the [Raspberry Pi Zero 2 W](https://www.raspberrypi.com/products/raspberry-pi-zero-2-w/) (but could run on most other Raspberry Pis) and the [Pimoroni HyperPixel 4.0 - Touch display](https://shop.pimoroni.com/products/hyperpixel-4?variant=12569485443155).
-It can be housed in [this](https://cults3d.com/en/3d-model/gadget/enclosure-for-pimoroni-hyperpixel-4-0-rectangle-touch-and-raspberry-pi-zero) 3D printed enclosure.
-
-![](./documentation/train_tracker_showcase.jpg)
-
-If more devices are requested to be supported I will make my best effort to support them. Please add your requested devices in the issues.
-
-## Setup on device
-
-Check out [Raspberry Pi specific instructions](./documentation/raspberry-pi/README.md) on how to set it up on your devices.
+The Vue components for this application are found in the [frontend](../frontend/) directory.
 
 ## Setup for local development
 
@@ -55,3 +39,7 @@ Locally preview production build:
 ```bash
 pnpm run preview
 ```
+
+## Deployment
+
+Deployment of this application is handled by [Vercel](https://vercel.com).

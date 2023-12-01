@@ -1,14 +1,21 @@
 {
   "compilerOptions": {
-    "strict": true,
     "strictNullChecks": true,
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
-    "skipLibCheck": true,
     "sourceMap": true,
-    "jsx": "react-jsx",
-    "moduleResolution": "node"
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "preserve",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
+    "strict": true,
+    "allowJs": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   }
 }

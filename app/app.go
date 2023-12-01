@@ -48,7 +48,7 @@ func (a *App) Startup(ctx context.Context) {
 	a.InitializeApplicationServices(ctx, config, preferencesDB)
 }
 
-// Initalizes the application's services.
+// Initializes the application's services.
 //
 // Parameters:
 //   - ctx: The context.Context for managing the application's context.

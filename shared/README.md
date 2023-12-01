@@ -1,1 +1,5 @@
-# Shared TypeScript code from the Nuxt and Frontend Vue application
+# Shared TypeScript code
+
+This directory contains shared TypeScript code for the Nuxt and Frontend Vue application.
+
+This includes constants and models.

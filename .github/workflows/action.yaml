@@ -1,14 +1,12 @@
 name: Build and Release WMATA Train Tracker
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
   pull_request:
 
 permissions:
   contents: read
-  # Optional: allow read access to pull request. Use with `only-new-issues` option.
-  # pull-requests: read
 
 jobs:
   lint-go:
@@ -23,9 +21,6 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          # Require: The version of golangci-lint to use.
-          # When `install-mode` is `binary` (default) the value can be v1.2 or v1.2.3 or `latest` to use the latest version.
-          # When `install-mode` is `goinstall` the value can be v1.2.3, `latest`, or the hash of a commit.
           version: v1.54
 
   test-go:
@@ -83,6 +78,7 @@ jobs:
               platform: linux/amd64,
               os: ubuntu-latest,
             },
+            # TODO: Build for MacOS and Windows
             # { name: wmata-train-tracker, platform: windows/amd64, os: windows-latest },
             # { name: wmata-train-tracker, platform: darwin/universal, os: macos-latest },
           ]
@@ -141,6 +137,7 @@ jobs:
         if: runner.os == 'Linux'
         run: chmod +x build/bin/*
 
+      # Tar the application to preserve permissions set by previous step
       - name: Tar files
         if: runner.os == 'Linux'
         run: tar -cvf wmata-train-tracker.tar -C build/bin .
