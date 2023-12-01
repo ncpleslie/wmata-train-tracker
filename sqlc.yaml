@@ -1,0 +1,10 @@
+version: "2"
+sql:
+  - engine: "sqlite"
+    queries: "app/db/query.sql"
+    schema: "app/db/schema.sql"
+    gen:
+      go:
+        package: "train_db"
+        out: "app/db"
+        emit_interface: true

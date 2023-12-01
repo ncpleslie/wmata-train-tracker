@@ -10,7 +10,7 @@ It can be housed in [this](https://cults3d.com/en/3d-model/gadget/enclosure-for-
 
 Flash your SD Card with Raspberry Pi OS (currently tested on Bullseye 32-bit). This "should" have the HyperPixel 4.0 software already installed but check out the [Pimoroni GitHub](https://github.com/pimoroni/hyperpixel4/issues/177) for further details.
 
-Set up the Raspberry Pi as you normally would and connect it to the internet. Plugging in an external display and keyboard may be the best approach. I have not found a reliable way to remotely set up the Wifi similar to how other IoT (Amazon Alexa, etc) set up their connections.
+Set up the Raspberry Pi as you normally would and connect it to the internet. Plugging in an external display and keyboard may be the best approach.
 
 ### Pimoroni 4.0 Setup
 
@@ -40,7 +40,7 @@ EndSection
 
 Courtesy of [jacyhung on the Pimoroni GitHub page](https://github.com/pimoroni/hyperpixel4/issues/177#issuecomment-1191037481).
 
-### Kiosk Mode Setup
+### Kiosk Mode Setup for Browser
 
 Based on the steps found [here](https://maker-tutorials.com/en/auto-start-midori-browser-in-fullscreen-kiosk-modus-raspberry-pi-linux/) we can set up the Raspberry Pi in "Kiosk Mode".
 
@@ -66,7 +66,7 @@ xset s off
 xset s noblank
 unclutter &
 matchbox-window-manager &
-midori -e Fullscreen https://wmata-train-tracking.vercel.app/ # Change this if you are hosting it yourself
+midori -e Fullscreen https://traintracking.nickleslie.dev/ # Change this if you are hosting it yourself
 ```
 
 Test it by running `sudo xinit ./startMidori.sh`. If you run into issues then try `sudo xinit ./startMidori.sh -- :1`.
@@ -78,3 +78,7 @@ sudo xinit /home/pi/start-midori.sh &
 ```
 
 Run `sudo reboot` and you're done.
+
+### Kiosk Mode for Wails Application
+
+Instructions to come
