@@ -38,5 +38,5 @@ clean:
 
 action:
 	@echo "### Running Action ###"
-	@mkdir tmp
+	@mkdir -p tmp
 	@act --artifact-server-path ./tmp
