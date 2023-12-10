@@ -76,7 +76,7 @@ jobs:
       matrix:
         build: [
             {
-              name: wmata-train-tracker,
+              name: wmata-train-tracker-linux,
               platform: linux/amd64,
               os: ubuntu-latest,
             },
@@ -147,12 +147,19 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: ${{matrix.build.name}}-${{runner.os}}
+          name: ${{matrix.build.name}}
           path: wmata-train-tracker.tar
 
   release:
     name: Release
     needs: [build]
+    matrix:
+      build: [
+          { name: wmata-train-tracker-linux },
+          # TODO: Build for MacOS and Windows
+          # { name: wmata-train-tracker, platform: windows/amd64, os: windows-latest },
+          # { name: wmata-train-tracker, platform: darwin/universal, os: macos-latest },
+        ]
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     steps:
@@ -160,7 +167,8 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: wmata-train-tracker-Linux
+          name: ${{matrix.build.name}}
+          path: artifacts
       - uses: softprops/action-gh-release@v1
         with:
-          files: wmata-train-tracker-Linux
+          files: artifacts/*
