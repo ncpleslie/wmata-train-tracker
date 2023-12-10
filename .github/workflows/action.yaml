@@ -142,13 +142,13 @@ jobs:
       # Tar the application to preserve permissions set by previous step
       - name: Tar files
         if: runner.os == 'Linux'
-        run: tar -cvf wmata-train-tracker.tar -C build/bin .
+        run: tar -cvf ${{matrix.build.name}}.tar -C build/bin .
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: ${{matrix.build.name}}
-          path: wmata-train-tracker.tar
+          path: ${{matrix.build.name}}.tar
 
   release:
     name: Release
