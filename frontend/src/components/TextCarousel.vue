@@ -52,7 +52,7 @@ const emit = defineEmits<{
     <p
       v-for="(slide, index) of slides"
       :key="index"
-      class="slide flex w-screen items-center justify-center text-center text-5xl leading-[1.7ch] text-red-600"
+      class="slide flex w-screen items-center justify-center text-center text-2xl leading-[1.7ch] text-red-600 md:text-5xl"
       :style="{ transform: `translateX(-${activeIndex * 100}%)` }"
     >
       {{ slide }}

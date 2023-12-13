@@ -16,7 +16,7 @@ const lastUpdatedLocale = computed(() =>
 </script>
 
 <template>
-  <SublineText class="text-4xl text-gray-700"
+  <SublineText class="text-2xl text-gray-700 md:text-4xl"
     >Updated: {{ lastUpdatedLocale }}</SublineText
   >
 </template>

@@ -1,8 +1,8 @@
 import { RouteRecordRaw, createRouter, createWebHashHistory } from "vue-router";
+import { Route } from "@wmata-train-tracker/shared";
 import IndexPage from "@/pages/IndexPage.vue";
 import StationsPage from "@/pages/StationsPage.vue";
 import IncidentsPage from "@/pages/IncidentsPage.vue";
-import { Route } from "@/constants/constants";
 
 const routes: RouteRecordRaw[] = [
   { path: Route.Index, component: IndexPage },

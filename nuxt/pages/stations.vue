@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { StationEntity } from "@wmata-train-tracker/shared";
+import { ScrollableStationList } from "@wmata-train-tracker/frontend";
+import { StationEntity, Route } from "@wmata-train-tracker/shared";
 import { useGetStations } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
-import { ScrollableStationList } from "@wmata-train-tracker/frontend";
 
 const stationStore = useTrainStore();
 const { selectedStation, currentPage } = toRefs(stationStore);
@@ -13,7 +13,7 @@ const router = useRouter();
 const onStationClicked = (station: StationEntity) => {
   stationStore.setSelectedStation(station);
   router.push({
-    path: "/",
+    path: Route.Index,
     query: { stationId: selectedStation.value?.code },
   });
 };
@@ -32,7 +32,7 @@ const onSetPage = (page: number) => {
       :current-page="currentPage"
       @on-set-page="onSetPage"
       @station-clicked="onStationClicked"
-      @back-clicked="router.push('/')"
+      @back-clicked="router.push(Route.Index)"
     />
     <ErrorPopup
       :open="(!pending && !data) || Boolean(error?.message)"

@@ -1,43 +1,32 @@
 <script setup lang="ts">
-type syncAsyncFunction = () => void | Promise<void>;
-interface AreaActionProps {
-  onLeftTap?: syncAsyncFunction;
-  onMiddleTap?: syncAsyncFunction;
-  onRightTap?: syncAsyncFunction;
-}
+const emit = defineEmits<{
+  onLeftTap: [];
+  onMiddleTap: [];
+  onRightTap: [];
+}>();
 
-const props = defineProps<AreaActionProps>();
-
-const slideLeft = ref(false);
-const slideRight = ref(false);
 const delay = 500;
 
 const handleClick = (event: MouseEvent) => {
   const screenWidth = window.innerWidth;
   const clickPosition = event.clientX;
 
-  if (clickPosition < screenWidth / 4 && props.onLeftTap) {
-    slideLeft.value = true;
+  if (clickPosition < screenWidth / 4) {
     setTimeout(() => {
-      props.onLeftTap!();
+      emit("onLeftTap");
     }, delay);
     return;
   }
 
-  if (clickPosition > (3 * screenWidth) / 4 && props.onRightTap) {
-    slideRight.value = true;
+  if (clickPosition > (3 * screenWidth) / 4) {
     setTimeout(() => {
-      props.onRightTap!();
+      emit("onRightTap");
     }, delay);
 
     return;
   }
 
-  if (!props.onMiddleTap) {
-    return;
-  }
-
-  props.onMiddleTap();
+  emit("onMiddleTap");
 };
 </script>
 

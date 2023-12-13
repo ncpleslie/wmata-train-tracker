@@ -1,8 +1,5 @@
 import { useRouter } from "vue-router";
-import { Route } from "@/constants/constants";
-
-type RouteKeys = keyof typeof Route;
-type RouteValues = (typeof Route)[RouteKeys];
+import { RouteValues } from "@wmata-train-tracker/shared";
 
 /**
  * A utility function that wraps the Vue Router's `useRouter` hook and provides type safety

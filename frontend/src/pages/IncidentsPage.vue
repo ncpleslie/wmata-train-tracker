@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { GetIncidents } from "@wails/go/app/App";
-import { IncidentsResponseEntity } from "@wmata-train-tracker/shared";
+import { IncidentsResponseEntity, Route } from "@wmata-train-tracker/shared";
 import IncidentsView from "@/components/IncidentsView.vue";
 import { useQuery } from "@/composables/query";
 import { useTypedRouter } from "@/composables/typed-router";
-import { Route } from "@/constants/constants";
 
 const router = useTypedRouter();
 

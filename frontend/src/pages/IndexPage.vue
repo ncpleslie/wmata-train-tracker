@@ -4,11 +4,12 @@ import {
   IncidentsResponseEntity,
   StationEntity,
   TrainsResponseEntity,
+  Route,
 } from "@wmata-train-tracker/shared";
 import HomeView from "@/components/HomeView.vue";
 import ErrorPopup from "@/components/ErrorPopup.vue";
 import { useQuery } from "@/composables/query";
-import { Route, RuntimeEvent, RuntimeErrorEvent } from "@/constants/constants";
+import { RuntimeEvent, RuntimeErrorEvent } from "@/constants/constants";
 import { useTypedRouter } from "@/composables/typed-router";
 import { useRuntime } from "@/composables/runtime";
 

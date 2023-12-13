@@ -14,7 +14,7 @@ defineProps<TrainArrivalBoardProps>();
 </script>
 
 <template>
-  <div ref="parent" class="bg-black text-8xl">
+  <div ref="parent" class="bg-black text-4xl md:text-8xl">
     <div class="mb-2 grid grid-cols-8 text-red-600">
       <p class="col-span-1">LN</p>
       <p class="col-span-2">CAR</p>

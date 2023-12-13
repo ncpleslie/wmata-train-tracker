@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import { useTrainStore } from "~/stores/train.store";
 import { IncidentsView } from "@wmata-train-tracker/frontend";
+import { Route } from "@wmata-train-tracker/shared";
+import { useTrainStore } from "~/stores/train.store";
 
 const trainStore = useTrainStore();
 const { incidents } = toRefs(trainStore);
 
 const onSlideEnd = () => {
   trainStore.clearIncidents();
-  navigateTo("/", { replace: true });
+  navigateTo(Route.Index, { replace: true });
 };
 
-onMounted(() => {
-  if (trainStore.incidents.length === 0) {
-    navigateTo("/", { replace: true });
-  }
+definePageMeta({
+  middleware: [
+    function () {
+      const trainStore = useTrainStore();
+      if (trainStore.incidents.length === 0) {
+        return navigateTo(Route.Index, { replace: true });
+      }
+    },
+  ],
 });
 </script>
 

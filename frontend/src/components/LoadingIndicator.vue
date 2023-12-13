@@ -2,6 +2,7 @@
 interface LoadingProps {
   show: boolean;
 }
+
 const minLoadingTimeInMs = 1000;
 const props = defineProps<LoadingProps>();
 const show = ref(false);

@@ -24,7 +24,8 @@ const closeModal = () => {
 
 watch(
   () => props.open,
-  () => (isOpen.value = props.open)
+  () => (isOpen.value = props.open),
+  { immediate: true }
 );
 </script>
 
@@ -44,7 +45,7 @@ watch(
       </TransitionChild>
 
       <div
-        class="fixed inset-28 flex min-h-full items-center justify-center overflow-y-auto p-4 text-center"
+        class="fixed inset-6 flex min-h-full items-center justify-center overflow-y-auto p-4 text-center md:inset-28"
       >
         <TransitionChild
           as="template"

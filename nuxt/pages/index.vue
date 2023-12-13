@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ErrorPopup, HomeView } from "@wmata-train-tracker/frontend";
+import { Route, RouteValues } from "@wmata-train-tracker/shared";
 import { useGetTrains } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
-import { route } from "~/types/route.type";
 
 const runtimeConfig = useRuntimeConfig();
 const router = useRouter();
@@ -32,13 +32,13 @@ const hasIncidents = computed(
     false
 );
 
-const routeOnAreaTap = async (route: route) => {
+const routeOnAreaTap = async (route: RouteValues) => {
   await router.push(route);
 };
 
 const onSeeIncidents = () => {
   if (hasIncidents.value) {
-    navigateTo("/incidents");
+    navigateTo(Route.Incidents);
   }
 };
 
@@ -82,17 +82,19 @@ watch(station, () => {
 
 <template>
   <div>
-    <HomeView
-      v-if="trainData"
-      :train-data="trainData"
-      :selected-station-name="trainStore.selectedStation?.name"
-      :has-incidents="hasIncidents"
-      :is-refreshing="trainIsRefreshing"
-      @on-left-tap="() => routeOnAreaTap('stations')"
-      @on-middle-tap="onMiddleTapped"
-      @on-right-tap="() => routeOnAreaTap('incidents')"
-      @on-see-incidents="onSeeIncidents"
-    />
+    <ClientOnly>
+      <HomeView
+        v-if="trainData"
+        :train-data="trainData"
+        :selected-station-name="trainStore.selectedStation?.name"
+        :has-incidents="hasIncidents"
+        :is-refreshing="trainIsRefreshing"
+        @on-left-tap="() => routeOnAreaTap(Route.Stations)"
+        @on-middle-tap="onMiddleTapped"
+        @on-right-tap="() => routeOnAreaTap(Route.Incidents)"
+        @on-see-incidents="onSeeIncidents"
+      />
+    </ClientOnly>
     <ErrorPopup
       :open="(!trainIsRefreshing && !trainData) || Boolean(trainError?.message)"
       @on-close="refreshTrains"

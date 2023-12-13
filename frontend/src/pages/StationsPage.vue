@@ -2,6 +2,7 @@
 import {
   StationEntity,
   StationsResponseEntity,
+  Route,
 } from "@wmata-train-tracker/shared";
 import ScrollableStationList from "@/components/ScrollableStationList.vue";
 import { useQuery } from "@/composables/query";
@@ -13,7 +14,6 @@ import {
   SetCurrentStationPage,
 } from "@wails/go/app/App";
 import { useTypedRouter } from "@/composables/typed-router";
-import { Route } from "@/constants/constants";
 import ErrorPopup from "@/components/ErrorPopup.vue";
 
 const router = useTypedRouter();

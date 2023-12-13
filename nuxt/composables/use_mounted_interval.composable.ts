@@ -9,7 +9,7 @@ export const useMountedInterval = (
   callback: () => void | Promise<void>,
   delay: number
 ) => {
-  const refreshInterval = ref<NodeJS.Timer>();
+  const refreshInterval = ref<NodeJS.Timeout>();
 
   onMounted(() => {
     refreshInterval.value = setInterval(callback, delay);
