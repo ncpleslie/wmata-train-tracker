@@ -8,7 +8,7 @@ export const trainRouter = router({
   getTrains: publicProcedure
     .input(
       z.object({
-        stationId: z.string().length(3).default("B03"),
+        stationId: z.string().length(3).default("E03"),
       })
     )
     .query(async ({ ctx, input }) => {

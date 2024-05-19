@@ -26,7 +26,11 @@ export default class TrainEntity {
     this.min = data.Min;
     this.seconds = data.Seconds ?? undefined;
     this.serviceType = data.ServiceType ?? undefined;
-    this.trainId = data.TrainId ?? undefined;
+    this.trainId =
+      data.TrainId ??
+      `${this.line}-${this.car}-${
+        this.locationCode
+      }-${this.destination.replaceAll(" ", "_")}-${this.group}-${this.min}`;
   }
 
   /**

@@ -4,7 +4,7 @@ import { TrainEntity } from "@wmata-train-tracker/shared";
 
 const [parent] = useAutoAnimate();
 
-const maxDestinationLength = 8;
+const maxDestinationLength = 9;
 
 interface TrainArrivalBoardProps {
   trains: TrainEntity[];
@@ -25,7 +25,7 @@ defineProps<TrainArrivalBoardProps>();
     <div
       v-for="train in trains"
       v-else
-      :key="`${train.car}${train.destinationCode}${train.min}`"
+      :key="train.trainId"
       class="grid grid-cols-8 whitespace-nowrap text-amber-400"
     >
       <p class="col-span-1">{{ train.line }}</p>
