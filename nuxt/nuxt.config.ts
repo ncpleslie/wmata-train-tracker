@@ -31,8 +31,9 @@ export default defineNuxtConfig({
     baseWmataUrl: "https://api.wmata.com",
     useMockTrainService: false,
     public: {
-      refreshInMs: 60000,
-      incidentRefreshInMs: 120000,
+      refreshInMs: 60000, // 1min
+      incidentRefreshInMs: 120000, // 2mins
+      applicationRefreshInMs: 86400000, // 24hrs
     },
   },
   app: {
