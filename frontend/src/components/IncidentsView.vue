@@ -37,11 +37,10 @@ const incidentDetails = computed(() => {
           } ${affected}`;
           return [...acc, ...splitStrings];
         }
+        return [...acc, `${description} ${affected}`.trim()];
       } else {
         return [...acc, `${description} ${affected} `];
       }
-
-      return acc;
     },
     []
   );

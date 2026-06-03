@@ -7,9 +7,10 @@ export default class TrainEntity {
   /**
    * Creates an instance of TrainEntity.
    * @param data - The train.
+   * @param index - Position in the arrival list, appended to trainId for uniqueness.
    * @throws - An error if the train is invalid.
    */
-  constructor(data: Train) {
+  constructor(data: Train, index: number) {
     const result = trainSchema.safeParse(data);
     if (!result.success) {
       throw new Error(result.error.message);
@@ -26,11 +27,12 @@ export default class TrainEntity {
     this.min = data.Min;
     this.seconds = data.Seconds ?? undefined;
     this.serviceType = data.ServiceType ?? undefined;
-    this.trainId =
+    this.trainId = `${
       data.TrainId ??
       `${this.line}-${this.car}-${
         this.locationCode
-      }-${this.destination.replaceAll(" ", "_")}-${this.group}`;
+      }-${this.destination.replaceAll(" ", "_")}-${this.group}`
+    }-${index}`;
   }
 
   /**
@@ -116,9 +118,10 @@ export default class TrainEntity {
   public serviceType?: string;
 
   /**
-   * The train ID.
-   * @example "101"
-   * @example "102"
+   * The train ID. Uses TrainId from the API when present, otherwise a generated
+   * fallback, with the list index appended to keep each row unique.
+   * @example "101-0"
+   * @example "RD-6-A01-Glenmont-1-2"
    */
   public trainId?: string;
 }

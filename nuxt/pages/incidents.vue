@@ -4,23 +4,27 @@ import { Route } from "@wmata-train-tracker/shared";
 import { useTrainStore } from "~/stores/train.store";
 
 const trainStore = useTrainStore();
-const { incidents } = toRefs(trainStore);
+const { data: incidentData, refresh } = useGetIncidents();
+
+const incidents = computed(
+  () => incidentData.value?.incidents ?? trainStore.incidents,
+);
 
 const onSlideEnd = () => {
   trainStore.clearIncidents();
   navigateTo(Route.Index, { replace: true });
 };
 
-definePageMeta({
-  middleware: [
-    function () {
-      const trainStore = useTrainStore();
-      if (trainStore.incidents.length === 0) {
-        return navigateTo(Route.Index, { replace: true });
-      }
-    },
-  ],
+onMounted(async () => {
+  await refresh();
+  if (!incidentData.value?.incidents?.length) {
+    navigateTo(Route.Index, { replace: true });
+  }
 });
+
+watch(incidentData, () =>
+  trainStore.setIncidents(incidentData.value?.incidents),
+);
 </script>
 
 <template>

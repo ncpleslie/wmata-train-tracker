@@ -16,7 +16,7 @@ const onSlideEnd = () => {
 };
 
 watch(incidentResponse, () => {
-  if (incidentResponse.value?.incidents.length === 0) {
+  if (incidentResponse.value?.incidents?.length === 0) {
     router.pushPath(Route.Index);
   }
 });

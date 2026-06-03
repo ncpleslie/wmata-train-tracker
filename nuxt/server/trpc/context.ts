@@ -1,9 +1,7 @@
 import type { H3Event } from "h3";
 import type { FetchCreateContextFnOptions } from "@trpc/server/adapters/fetch";
 import type { inferAsyncReturnType } from "@trpc/server";
-import TrainService from "../services/train.service";
-import MockTrainService from "../services/mock/mock-train.service";
-import type ITrainService from "../services/interfaces/train-service.interface";
+import { getTrainService } from "../services/get-train-service";
 
 /**
  * Creates context for an incoming request
@@ -12,14 +10,8 @@ import type ITrainService from "../services/interfaces/train-service.interface";
 export const createContext = (
   _event: H3Event,
   _fetchOpts: FetchCreateContextFnOptions,
-) => {
-  const { wmataApiKey, baseWmataUrl, useMockTrainService } = useRuntimeConfig();
-
-  return {
-    trainService: useMockTrainService
-      ? (new MockTrainService() as ITrainService)
-      : (new TrainService(baseWmataUrl, wmataApiKey) as ITrainService),
-  };
-};
+) => ({
+  trainService: getTrainService(),
+});
 
 export type Context = inferAsyncReturnType<typeof createContext>;

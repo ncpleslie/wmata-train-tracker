@@ -20,17 +20,32 @@ export const useQuery = <T, E = Error>(queryFn: () => Promise<T>) => {
   const error = ref<E>();
   const isLoading = ref(false);
 
+  let generation = 0;
+  onScopeDispose(() => {
+    generation++;
+  });
+
   const execute = () => {
+    const id = ++generation;
     (async () => {
       try {
         isLoading.value = true;
         const response = await queryFn();
+        if (id !== generation) {
+          return;
+        }
         data.value = response as T;
+        error.value = undefined;
       } catch (e) {
+        if (id !== generation) {
+          return;
+        }
         console.error(e);
         error.value = e as E;
       } finally {
-        isLoading.value = false;
+        if (id === generation) {
+          isLoading.value = false;
+        }
       }
     })();
   };

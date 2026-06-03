@@ -14,7 +14,7 @@ export default class TrainsResponseEntity {
    * @param data - The trains.
    */
   constructor(data: Train[]) {
-    this.trains = data.map((train) => new TrainEntity(train));
+    this.trains = data.map((train, index) => new TrainEntity(train, index));
   }
 
   /**

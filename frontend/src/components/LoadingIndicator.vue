@@ -28,7 +28,8 @@ watch(
       show.value = false;
       hideTimeout = undefined;
     }, minLoadingTimeInMs);
-  }
+  },
+  { immediate: true },
 );
 
 onUnmounted(() => {

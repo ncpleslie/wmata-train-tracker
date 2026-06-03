@@ -1,7 +1,8 @@
 import type { TRPCClientError } from "@trpc/client";
 import type { inferRouterOutputs } from "@trpc/server";
+import type { MaybeRef } from "vue";
+import { toValue } from "vue";
 import type { AppRouter } from "@/server/trpc/routers";
-import { useTrainStore } from "~/stores/train.store";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type getIncidentsOutput = RouterOutput["train"]["getIncidents"];
@@ -14,17 +15,11 @@ type ErrorOutput = TRPCClientError<AppRouter>;
 const getCachedData = <T>(
   key: string,
   nuxtApp: ReturnType<typeof useNuxtApp>,
-  ctx?: { cause?: string },
 ): T | undefined => {
   if (nuxtApp.isHydrating) {
     return nuxtApp.payload.data[key] as T | undefined;
   }
-  if (ctx?.cause === "refresh:manual" || ctx?.cause === "refresh:hook") {
-    return undefined;
-  }
-  return (nuxtApp.payload.data[key] ?? nuxtApp.static.data[key]) as
-    | T
-    | undefined;
+  return undefined;
 };
 
 /**
@@ -43,33 +38,34 @@ export function useGetIncidents() {
 
 /**
  * Retrieves trains using the Nuxt app client and returns the result as asynchronous data.
- * The station ID is retrieved from the selected station in the station store.
- * If no station is selected, a default station will be provided.
+ * If no station code is provided, the server default station will be used.
  *
+ * @param stationId - Reactive station code from URL or store.
  * @returns - The asynchronous data containing the trains.
  */
-export function useGetTrains() {
-  const trainStore = useTrainStore();
+export function useGetTrains(stationId: MaybeRef<string | undefined>) {
+  const code = computed(() => toValue(stationId));
   const { $client } = useNuxtApp();
   return useAsyncData<GetTrainsOutput, ErrorOutput>(
-    "trains",
+    () => `trains-${code.value ?? "none"}`,
     () =>
       $client.train.getTrains.query({
-        stationId: trainStore.selectedStation?.code,
+        stationId: code.value,
       }),
-    { getCachedData },
+    { immediate: false, getCachedData, watch: [code] },
   );
 }
 
-export function useGetStationById(stationId: string) {
+export function useGetStationById(stationId: MaybeRef<string>) {
+  const id = computed(() => toValue(stationId));
   const { $client } = useNuxtApp();
   return useAsyncData<GetStationByIdOutput, ErrorOutput>(
-    `station-${stationId}`,
+    () => `station-${id.value}`,
     () =>
       $client.train.getStationById.query({
-        stationId,
+        stationId: id.value,
       }),
-    { immediate: false, getCachedData },
+    { immediate: false, getCachedData, watch: [id] },
   );
 }
 

@@ -52,15 +52,24 @@ useResizeObserver(parent, () => {
   firstObservation.value = false;
 });
 
-const totalPages = computed(() =>
-  Math.ceil((props.stations?.length ?? 0) / totalPerPage.value)
-);
+const totalPages = computed(() => {
+  if (totalPerPage.value === 0) {
+    return 0;
+  }
+  return Math.ceil((props.stations?.length ?? 0) / totalPerPage.value);
+});
 
 const nextPage = () => {
+  if (totalPages.value === 0) {
+    return;
+  }
   emit("onSetPage", (props.currentPage + 1) % totalPages.value);
 };
 
 const previousPage = () => {
+  if (totalPages.value === 0) {
+    return;
+  }
   const newPage = props.currentPage - 1;
   emit("onSetPage", newPage >= 0 ? newPage : totalPages.value - 1);
 };
