@@ -1,3 +1,4 @@
+version: "2"
 issues:
   exclude:
     - "invalid go:embed: build system did not supply embed configuration"

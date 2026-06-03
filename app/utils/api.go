@@ -85,7 +85,7 @@ func QueryTrpcApiGet[T any, U any](url string, requestPayload T) (U, error) {
 	if err != nil {
 		return *new(U), err
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 
 	var responseBody TRPCResponse[U]
 	if err := json.NewDecoder(response.Body).Decode(&responseBody); err != nil {

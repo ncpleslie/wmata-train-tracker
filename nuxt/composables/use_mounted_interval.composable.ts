@@ -8,7 +8,7 @@
  */
 export const useMountedInterval = (
   callback: () => void | Promise<void>,
-  delay: number
+  delay: number,
 ) => {
   const refreshInterval = ref<NodeJS.Timeout>();
   let inFlight = false;

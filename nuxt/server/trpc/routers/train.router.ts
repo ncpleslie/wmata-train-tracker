@@ -9,7 +9,7 @@ export const trainRouter = router({
     .input(
       z.object({
         stationId: z.string().length(3).default("E03"),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await ctx.trainService.getTrains(input.stationId);
@@ -21,7 +21,7 @@ export const trainRouter = router({
     .input(
       z.object({
         stationId: z.string().length(3),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await ctx.trainService.getStationById(input.stationId);

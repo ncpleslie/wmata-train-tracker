@@ -8,6 +8,9 @@ type RuntimeErrorEventKeys = keyof typeof RuntimeErrorEvent;
 type RuntimeErrorEventValues =
   (typeof RuntimeErrorEvent)[RuntimeErrorEventKeys];
 
+const hasWailsRuntime = () =>
+  typeof window !== "undefined" && "runtime" in window;
+
 /**
  * A utility function that provides a simplified interface for interacting with runtime events.
  * It encapsulates the `EventsOn` function and offers a typed `eventOn` method to subscribe to runtime events.
@@ -35,6 +38,10 @@ export const useRuntime = () => {
     event: RuntimeEventValues | RuntimeErrorEventValues,
     callback: (value: T) => void
   ) => {
+    if (!hasWailsRuntime()) {
+      return;
+    }
+
     const unsubscribe = EventsOn(event, (eventData: T) => {
       callback(eventData);
     });

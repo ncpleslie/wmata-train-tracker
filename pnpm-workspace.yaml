@@ -2,3 +2,28 @@ packages:
   - "shared"
   - "frontend"
   - "nuxt"
+
+overrides:
+  vite: 7.3.3
+
+minimumReleaseAge: 10080
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 43200
+trustPolicyExclude:
+  - tinyexec@1.2.2
+blockExoticSubdeps: true
+
+strictPeerDependencies: true
+strictDepBuilds: true
+savePrefix: ""
+engineStrict: true
+nodeVersion: 24.11.0
+verifyDepsBeforeRun: error
+
+allowBuilds:
+  "@parcel/watcher": true
+  "@tailwindcss/oxide": true
+  esbuild: true
+  lightningcss: true
+  unrs-resolver: true
+  vue-demi: true

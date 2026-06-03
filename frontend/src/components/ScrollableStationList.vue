@@ -21,9 +21,10 @@ const currentHeight = ref(0);
 const currentWidth = ref(0);
 
 const displayedItems = computed(() => {
+  const stations = props.stations ?? [];
   const startIndex = props.currentPage * totalPerPage.value;
   const endIndex = startIndex + totalPerPage.value;
-  return props.stations.slice(startIndex, endIndex);
+  return stations.slice(startIndex, endIndex);
 });
 
 useResizeObserver(parent, () => {
@@ -52,7 +53,7 @@ useResizeObserver(parent, () => {
 });
 
 const totalPages = computed(() =>
-  Math.ceil(props.stations.length / totalPerPage.value)
+  Math.ceil((props.stations?.length ?? 0) / totalPerPage.value)
 );
 
 const nextPage = () => {

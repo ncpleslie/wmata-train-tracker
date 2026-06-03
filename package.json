@@ -1,5 +1,13 @@
 {
   "name": "wmata-train-tracker",
   "version": "1.0.0",
-  "description": ""
+  "description": "",
+  "packageManager": "pnpm@11.2.2",
+  "scripts": {
+    "install:ci": "pnpm install --frozen-lockfile"
+  },
+  "engines": {
+    "node": ">=24.11.0",
+    "pnpm": ">=10"
+  }
 }

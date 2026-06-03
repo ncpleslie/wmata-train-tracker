@@ -50,6 +50,8 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
 .loading-indicator {
   @apply absolute bottom-0 mx-auto h-1 w-screen overflow-hidden before:absolute before:-left-2/4 before:h-1 before:w-2/5 before:animate-[loading-animation_1s_linear_infinite] before:bg-amber-400 before:content-[""];
 }

@@ -9,15 +9,17 @@ export default defineNuxtPlugin(() => {
    * built on top of `useAsyncData`.
    */
   const client = createTRPCNuxtClient<AppRouter>({
-    transformer: superjson,
     links: [
       loggerLink({
+        // SSR results include Fetch Response in context; Nuxt dev logs cannot stringify those.
         enabled: (opts) =>
-          process.env.NODE_ENV === "development" ||
-          (opts.direction === "down" && opts.result instanceof Error),
+          import.meta.client &&
+          (process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error)),
       }),
       httpBatchLink({
         url: "/api/trpc",
+        transformer: superjson,
       }),
     ],
   });

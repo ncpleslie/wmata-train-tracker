@@ -1,6 +1,6 @@
 <template>
   <main class="h-screen overflow-x-hidden overflow-y-hidden bg-black">
-    <NuxtPage :key="$route.fullPath" />
+    <NuxtPage />
   </main>
 </template>
 

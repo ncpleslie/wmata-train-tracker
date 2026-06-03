@@ -1,17 +1,13 @@
+import tailwindcss from "@tailwindcss/vite";
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
+    "@nuxt/eslint",
     "@vueuse/nuxt",
     "nuxt-headlessui",
     "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-    "@nuxtjs/tailwindcss",
-    [
-      "@nuxtjs/eslint-module",
-      {
-        lintOnStart: false,
-      },
-    ],
+    "pinia-plugin-persistedstate/nuxt",
     [
       "@nuxtjs/google-fonts",
       {
@@ -23,6 +19,10 @@ export default defineNuxtConfig({
       },
     ],
   ],
+  css: ["~/assets/css/tailwind.css"],
+  vite: {
+    plugins: [tailwindcss()],
+  },
   build: {
     transpile: ["trpc-nuxt"],
   },
@@ -31,9 +31,9 @@ export default defineNuxtConfig({
     baseWmataUrl: "https://api.wmata.com",
     useMockTrainService: false,
     public: {
-      refreshInMs: 60000, // 1min
-      incidentRefreshInMs: 120000, // 2mins
-      applicationRefreshInMs: 86400000, // 24hrs
+      refreshInMs: 60000,
+      incidentRefreshInMs: 120000,
+      applicationRefreshInMs: 86400000,
     },
   },
   app: {
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
       title: "WMATA Train Arrival Times",
       meta: [
         {
-          hid: "description",
+          key: "description",
           name: "description",
           content: "WMATA Train Arrival Times",
         },
@@ -56,14 +56,9 @@ export default defineNuxtConfig({
         },
       ],
     },
-    pageTransition: { name: "page", mode: "out-in" },
+    pageTransition: { name: "page" },
   },
   headlessui: {
     prefix: "Headless",
-  },
-  tailwindcss: {
-    config: {
-      content: ["../frontend/src/components/**/*.{js,vue,ts}"],
-    },
   },
 });

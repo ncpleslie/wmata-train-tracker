@@ -1,10 +1,12 @@
-import {
-  IncidentsResponseEntity,
+import type {
   StationEntity,
   StationsResponseEntity,
+} from "@wmata-train-tracker/shared";
+import {
+  IncidentsResponseEntity,
   TrainsResponseEntity,
 } from "@wmata-train-tracker/shared";
-import ITrainService from "../interfaces/train-service.interface";
+import type ITrainService from "../interfaces/train-service.interface";
 import trains from "./trains.json";
 import incidents from "./incidents.json";
 

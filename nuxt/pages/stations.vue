@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ScrollableStationList } from "@wmata-train-tracker/frontend";
-import { StationEntity, Route } from "@wmata-train-tracker/shared";
+import type { StationEntity } from "@wmata-train-tracker/shared";
+import { Route } from "@wmata-train-tracker/shared";
 import { useGetStations } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
 
@@ -26,7 +27,7 @@ const onSetPage = (page: number) => {
 <template>
   <div class="stations">
     <ScrollableStationList
-      v-if="data"
+      v-if="data?.stations"
       :stations="data.stations"
       :selected-station="selectedStation"
       :current-page="currentPage"

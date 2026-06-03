@@ -1,4 +1,4 @@
-import { type client } from "./plugins/client";
+import type { client } from "./plugins/client";
 
 declare module "#app" {
   interface NuxtApp {

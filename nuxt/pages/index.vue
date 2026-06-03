@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ErrorPopup, HomeView } from "@wmata-train-tracker/frontend";
-import { Route, RouteValues } from "@wmata-train-tracker/shared";
+import type { RouteValues } from "@wmata-train-tracker/shared";
+import { Route } from "@wmata-train-tracker/shared";
 import { useGetTrains } from "~/composables/use_train.composable";
 import { useTrainStore } from "~/stores/train.store";
 
@@ -19,7 +20,7 @@ const {
 } = useGetTrains();
 const { data: incidentData, refresh: refreshIncidents } = useGetIncidents();
 const { data: station, refresh: refreshStation } = useGetStationById(
-  stationId.value
+  stationId.value,
 );
 
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
@@ -29,7 +30,7 @@ const hasIncidents = computed(
   () =>
     (incidentData.value?.incidents &&
       incidentData.value?.incidents.length > 0) ||
-    false
+    false,
 );
 
 const routeOnAreaTap = async (route: RouteValues) => {
@@ -43,8 +44,8 @@ const onSeeIncidents = () => {
 };
 
 const onMiddleTapped = () => {
-  refreshTrains();
-  refreshIncidents();
+  refreshTrains({ dedupe: "cancel" });
+  refreshIncidents({ dedupe: "cancel" });
 };
 
 onMounted(() => {
@@ -53,7 +54,7 @@ onMounted(() => {
 });
 
 watch(incidentData, () =>
-  trainStore.setIncidents(incidentData?.value?.incidents)
+  trainStore.setIncidents(incidentData?.value?.incidents),
 );
 
 watch(
@@ -69,7 +70,7 @@ watch(
 
     refreshStation();
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 watch(station, () => {
@@ -82,19 +83,16 @@ watch(station, () => {
 
 <template>
   <div>
-    <ClientOnly>
-      <HomeView
-        v-if="trainData"
-        :train-data="trainData"
-        :selected-station-name="trainStore.selectedStation?.name"
-        :has-incidents="hasIncidents"
-        :is-refreshing="trainIsRefreshing"
-        @on-left-tap="() => routeOnAreaTap(Route.Stations)"
-        @on-middle-tap="onMiddleTapped"
-        @on-right-tap="() => routeOnAreaTap(Route.Incidents)"
-        @on-see-incidents="onSeeIncidents"
-      />
-    </ClientOnly>
+    <HomeView
+      :train-data="trainData"
+      :selected-station-name="trainStore.selectedStation?.name"
+      :has-incidents="hasIncidents"
+      :is-refreshing="trainIsRefreshing || !trainData"
+      @on-left-tap="() => routeOnAreaTap(Route.Stations)"
+      @on-middle-tap="onMiddleTapped"
+      @on-right-tap="() => routeOnAreaTap(Route.Incidents)"
+      @on-see-incidents="onSeeIncidents"
+    />
     <ErrorPopup
       :open="(!trainIsRefreshing && !trainData) || Boolean(trainError?.message)"
       @on-close="refreshTrains"

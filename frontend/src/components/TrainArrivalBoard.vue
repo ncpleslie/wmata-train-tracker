@@ -41,6 +41,8 @@ defineProps<TrainArrivalBoardProps>();
 </template>
 
 <style scoped>
+@reference "tailwindcss";
+
 .text-glow-amber-400 {
   @apply text-amber-400;
   text-shadow: 0 0 5px #fbbf24, 0 0 10px #fbbf24;

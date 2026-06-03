@@ -4,10 +4,13 @@ import {
   StationsResponseEntity,
   TrainsResponseEntity,
 } from "@wmata-train-tracker/shared";
-import ITrainService from "./interfaces/train-service.interface";
+import type ITrainService from "./interfaces/train-service.interface";
 
 export default class TrainService implements ITrainService {
-  constructor(private baseUrl: string, private apiKey: string) {}
+  constructor(
+    private baseUrl: string,
+    private apiKey: string,
+  ) {}
 
   public async getIncidents() {
     const response = await this.queryWmata("/Incidents.svc/json/Incidents");
@@ -17,18 +20,18 @@ export default class TrainService implements ITrainService {
 
   public async getTrains(stationId: string, max = 5) {
     const response = await this.queryWmata(
-      `/StationPrediction.svc/json/GetPrediction/${stationId}`
+      `/StationPrediction.svc/json/GetPrediction/${stationId}`,
     );
 
     response.Trains = response.Trains.slice(0, max);
     return new TrainsResponseEntity(
-      response.Trains.length === 0 ? [] : response.Trains
+      response.Trains.length === 0 ? [] : response.Trains,
     );
   }
 
   public async getStationById(stationId: string) {
     const response = await this.queryWmata(
-      `/Rail.svc/json/jStationInfo?StationCode=${stationId}`
+      `/Rail.svc/json/jStationInfo?StationCode=${stationId}`,
     );
 
     return new StationEntity(response);

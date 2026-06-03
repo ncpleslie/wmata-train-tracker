@@ -1,5 +1,8 @@
 import { defineStore } from "pinia";
-import { IncidentEntity, StationEntity } from "@wmata-train-tracker/shared";
+import type {
+  IncidentEntity,
+  StationEntity,
+} from "@wmata-train-tracker/shared";
 
 /**
  * Store for the app.
@@ -40,5 +43,5 @@ export const useTrainStore = defineStore(
   },
   {
     persist: true,
-  }
+  },
 );

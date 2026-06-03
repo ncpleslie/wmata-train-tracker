@@ -9,7 +9,11 @@ const { eventOn } = useRuntime();
 
 const started = ref(false);
 
-eventOn(RuntimeEvent.started, () => (started.value = true));
+if (import.meta.env.DEV && !("runtime" in window)) {
+  started.value = true;
+} else {
+  eventOn(RuntimeEvent.started, () => (started.value = true));
+}
 
 const onClose = (e: KeyboardEvent) => {
   if (e.key === "q") {
