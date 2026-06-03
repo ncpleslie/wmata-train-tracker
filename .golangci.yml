@@ -1,5 +1,7 @@
 version: "2"
-issues:
-  exclude:
-    - "invalid go:embed: build system did not supply embed configuration"
-    - "invalid go:embed: build system did not supply embed configuration (typecheck)"
+linters:
+  exclusions:
+    rules:
+      - linters:
+          - typecheck
+        text: "invalid go:embed: build system did not supply embed configuration"
