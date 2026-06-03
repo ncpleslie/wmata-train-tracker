@@ -7,7 +7,7 @@ import { useTypedRouter } from "@/composables/typed-router";
 
 const router = useTypedRouter();
 
-const { data: incidentResponse } = useQuery<IncidentsResponseEntity>(
+const { data: incidentResponse } = useQuery<IncidentsResponseEntity>(() =>
   GetIncidents()
 );
 

@@ -28,10 +28,11 @@
     "nuxt-headlessui": "1.1.4",
     "prettier": "2.8.8",
     "prettier-plugin-tailwindcss": "0.2.8",
-    "typescript": "5.0.4"
+    "typescript": "5.0.4",
+    "vue": "^3.3.4",
+    "vue-router": "^4.2.5"
   },
   "dependencies": {
-    "@formkit/auto-animate": "1.0.0-beta.6",
     "@pinia/nuxt": "0.4.11",
     "@trpc/client": "10.26.0",
     "@trpc/server": "10.26.0",

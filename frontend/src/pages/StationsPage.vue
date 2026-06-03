@@ -18,16 +18,18 @@ import ErrorPopup from "@/components/ErrorPopup.vue";
 
 const router = useTypedRouter();
 
-const { data: currentPage } = useQuery<number>(GetCurrentStationPage());
+const { data: currentPage } = useQuery<number>(() => GetCurrentStationPage());
 
 const {
   data: stations,
   error,
   isLoading,
   refetch,
-} = useQuery<StationsResponseEntity>(GetStations());
+} = useQuery<StationsResponseEntity>(() => GetStations());
 
-const { data: selectedStation } = useQuery<StationEntity>(GetSelectedStation());
+const { data: selectedStation } = useQuery<StationEntity>(() =>
+  GetSelectedStation()
+);
 
 const onStationClicked = async (station: StationEntity) => {
   await SetSelectedStation(station.code);

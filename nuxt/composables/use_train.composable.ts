@@ -19,6 +19,7 @@ type ErrorOutput = TRPCClientError<AppRouter>;
 export function useGetIncidents() {
   const { $client } = useNuxtApp();
   return useAsyncData<getIncidentsOutput, ErrorOutput>(
+    "incidents",
     () => $client.train.getIncidents.query(),
     { immediate: false }
   );
@@ -34,7 +35,7 @@ export function useGetIncidents() {
 export function useGetTrains() {
   const trainStore = useTrainStore();
   const { $client } = useNuxtApp();
-  return useAsyncData<GetTrainsOutput, ErrorOutput>(() =>
+  return useAsyncData<GetTrainsOutput, ErrorOutput>("trains", () =>
     $client.train.getTrains.query({
       stationId: trainStore.selectedStation?.code,
     })
@@ -44,6 +45,7 @@ export function useGetTrains() {
 export function useGetStationById(stationId: string) {
   const { $client } = useNuxtApp();
   return useAsyncData<GetStationByIdOutput, ErrorOutput>(
+    `station-${stationId}`,
     () =>
       $client.train.getStationById.query({
         stationId,
@@ -59,7 +61,7 @@ export function useGetStationById(stationId: string) {
  */
 export function useGetStations() {
   const { $client } = useNuxtApp();
-  return useAsyncData<GetStationOutput, ErrorOutput>(() =>
+  return useAsyncData<GetStationOutput, ErrorOutput>("stations", () =>
     $client.train.getStations.query()
   );
 }

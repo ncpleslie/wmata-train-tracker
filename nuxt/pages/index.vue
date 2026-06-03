@@ -24,8 +24,6 @@ const { data: station, refresh: refreshStation } = useGetStationById(
 
 useMountedInterval(refreshTrains, runtimeConfig.public.refreshInMs);
 useMountedInterval(refreshIncidents, runtimeConfig.public.incidentRefreshInMs);
-// Reload the whole app every 24hrs to prevent expanding memory usage.
-useMountedInterval(reloadNuxtApp, runtimeConfig.public.applicationRefreshInMs);
 
 const hasIncidents = computed(
   () =>

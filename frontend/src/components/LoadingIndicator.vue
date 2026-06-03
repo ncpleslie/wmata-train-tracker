@@ -6,6 +6,7 @@ interface LoadingProps {
 const minLoadingTimeInMs = 1000;
 const props = defineProps<LoadingProps>();
 const show = ref(false);
+let hideTimeout: ReturnType<typeof setTimeout> | undefined;
 
 /**
  * Ensure the loading indicator is always displayed for at least n seconds.
@@ -14,15 +15,27 @@ const show = ref(false);
 watch(
   () => props.show,
   () => {
+    if (hideTimeout) {
+      clearTimeout(hideTimeout);
+      hideTimeout = undefined;
+    }
+
     if (props.show) {
       show.value = true;
       return;
     }
-    setTimeout(() => {
+    hideTimeout = setTimeout(() => {
       show.value = false;
+      hideTimeout = undefined;
     }, minLoadingTimeInMs);
   }
 );
+
+onUnmounted(() => {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout);
+  }
+});
 </script>
 
 <template>

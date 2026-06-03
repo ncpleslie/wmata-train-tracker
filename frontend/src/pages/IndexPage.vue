@@ -25,11 +25,13 @@ const {
   error: trainError,
   isLoading: isTrainsLoading,
   refetch,
-} = useQuery<TrainsResponseEntity>(GetTrains());
+} = useQuery<TrainsResponseEntity>(() => GetTrains());
 
-const { data: selectedStation } = useQuery<StationEntity>(GetSelectedStation());
+const { data: selectedStation } = useQuery<StationEntity>(() =>
+  GetSelectedStation()
+);
 
-const { data: queryIncidents } = useQuery<IncidentsResponseEntity>(
+const { data: queryIncidents } = useQuery<IncidentsResponseEntity>(() =>
   GetIncidents()
 );
 
@@ -65,9 +67,7 @@ const refresh = () => {
 };
 
 watch(trainsResponse, () => {
-  if (trainsResponse.value?.trains.length !== 0) {
-    data.value = trainsResponse.value;
-  }
+  data.value = trainsResponse.value;
 });
 </script>
 

@@ -2,7 +2,7 @@
  * A custom hook for handling asynchronous queries. It takes a Promise as an argument,
  * executes it, and provides reactive values for data, error, and loading status.
  *
- * @param awaitable - A Promise representing the asynchronous operation to be executed.
+ * @param queryFn - A function that returns a Promise for the asynchronous operation.
  *
  * @returns An object with the following properties:
  *   - data: A ref holding the result of the asynchronous operation (undefined initially).
@@ -12,10 +12,10 @@
  *
  * Example usage:
  * ```typescript
- * const { data, error, isLoading, refetch } = useQuery(fetchData());
+ * const { data, error, isLoading, refetch } = useQuery(() => fetchData());
  * ```
  */
-export const useQuery = <T, E = Error>(awaitable: Promise<T>) => {
+export const useQuery = <T, E = Error>(queryFn: () => Promise<T>) => {
   const data = ref<T>();
   const error = ref<E>();
   const isLoading = ref(false);
@@ -24,7 +24,7 @@ export const useQuery = <T, E = Error>(awaitable: Promise<T>) => {
     (async () => {
       try {
         isLoading.value = true;
-        const response = await awaitable;
+        const response = await queryFn();
         data.value = response as T;
       } catch (e) {
         console.error(e);

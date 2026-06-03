@@ -35,9 +35,10 @@ export const useRuntime = () => {
     event: RuntimeEventValues | RuntimeErrorEventValues,
     callback: (value: T) => void
   ) => {
-    EventsOn(event, (eventData: T) => {
+    const unsubscribe = EventsOn(event, (eventData: T) => {
       callback(eventData);
     });
+    onScopeDispose(unsubscribe);
   };
 
   return {

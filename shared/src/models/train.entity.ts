@@ -30,7 +30,7 @@ export default class TrainEntity {
       data.TrainId ??
       `${this.line}-${this.car}-${
         this.locationCode
-      }-${this.destination.replaceAll(" ", "_")}-${this.group}-${this.min}`;
+      }-${this.destination.replaceAll(" ", "_")}-${this.group}`;
   }
 
   /**

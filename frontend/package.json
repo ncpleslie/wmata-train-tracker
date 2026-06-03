@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@formkit/auto-animate": "^0.8.0",
+    "@formkit/auto-animate": "^0.8.2",
     "@wmata-train-tracker/shared": "workspace:^",
     "vue": "^3.3.4",
     "vue-router": "^4.2.5"
